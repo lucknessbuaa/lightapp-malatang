@@ -39,7 +39,7 @@ WSGI_APPLICATION = 'base.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_mysqlpool.backends.mysqlpool',
-        'NAME': 'community',
+        'NAME': 'malatang',
         'USER': 'root',
         'PASSWORD': 'nameLR9969',
         'HOST': 'localhost',

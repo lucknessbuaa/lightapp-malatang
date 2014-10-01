@@ -5,25 +5,34 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-ACTIVITY_CHOICES = (
-    ('ad', u'广告'),
-    ('activity', u'活动'),
-    ('announcement', u'公告')
-)
-
-class News(models.Model):
-    type = models.CharField(verbose_name=u'类型', choices=ACTIVITY_CHOICES, max_length=20)
-    content = models.TextField(verbose_name=u'内容')
-    title = models.CharField(verbose_name=u'标题', max_length=255)
+class Dishes(models.Model):
+    desc = models.TextField(verbose_name=u'介绍')
+    cover = models.URLField(verbose_name=u'截图')
+    name = models.CharField(verbose_name=u'名称', max_length=255)
+    prize = models.DecimalField(verbose_name=u'价格', max_digits=19, decimal_places=10)
+    removed = models.BooleanField()
 
 
-class Participants(models.Model):
-    user = models.ForeignKey(User)
-    news = models.ForeignKey(News)
+class Seet(models.Model):
+    num = models.IntegerField(verbose_name=u'人数')
 
 
-class Feedback(models.Model):
-    message = models.CharField(verbose_name=u'信息', max_length=255)
-    user = models.ForeignKey(User)
+class Order(models.Model):
+    date = models.DateTimeField(verbose_name=u'订餐时间')
+    deadline = models.DateTimeField(verbose_name=u'送餐时间')
 
+
+class OrderItem(models.Model):
+    prize = models.DecimalField(verbose_name=u'价格', max_digits=19, decimal_places=10)
+    dish = models.ForeignKey(Dishes)
+    order = models.ForeignKey(Order)
+
+
+class SeetOrder(models.Model):
+    date = models.DateTimeField(verbose_name=u'时间')
+
+
+class SeetOrderItem(models.Model):
+    seet = models.ForeignKey(Seet)
+    num = models.IntegerField(verbose_name=u'数量')
 
