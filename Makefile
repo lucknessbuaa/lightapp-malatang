@@ -39,8 +39,8 @@ venv:
 	
 deps:
 	$(activate_venv) && pip install -r requirements.txt
-	npm install
-	bower install
+	-npm install
+	-bower install
 	
 .PHONY: debug \
 	db \
