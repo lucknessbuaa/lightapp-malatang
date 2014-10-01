@@ -25,7 +25,7 @@ collectstatic:
 	$(activate_venv) \
 	&& ./manage.py collectstatic --noinput
  
-database:=
+database:=community
 password:=
 db:
 	-mysql -u root --password=$(password) -e \
