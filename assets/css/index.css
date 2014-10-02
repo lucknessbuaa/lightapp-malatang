@@ -1,9 +1,18 @@
 body {
+	overflow: hidden;
 	margin: 0;
 	background-color: #FCF7F1;
 }
 .main {
 	margin-top: 10px;
+}
+.main a.card {
+	display: block;
+	position: relative;
+	left: 200%;
+}
+.main a.card.seat_order {
+	left: 100%;
 }
 .main>.row {
 	margin-top: 10px;
