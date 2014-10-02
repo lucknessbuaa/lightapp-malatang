@@ -13,7 +13,7 @@ class Dishes(models.Model):
     removed = models.BooleanField()
 
 
-class Seet(models.Model):
+class Seat(models.Model):
     num = models.IntegerField(verbose_name=u'人数')
 
 
@@ -28,11 +28,11 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order)
 
 
-class SeetOrder(models.Model):
+class SeatOrder(models.Model):
     date = models.DateTimeField(verbose_name=u'时间')
 
 
-class SeetOrderItem(models.Model):
-    seet = models.ForeignKey(Seet)
+class SeatOrderItem(models.Model):
+    seat = models.ForeignKey(Seat)
     num = models.IntegerField(verbose_name=u'数量')
 

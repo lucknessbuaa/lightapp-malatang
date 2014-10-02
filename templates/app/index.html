@@ -5,12 +5,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>百度直达号-社团</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+    <title>百度直达号-麻辣烫</title>
 </head>
 
 <body>
-
+<div class="banner">
+	<img src="{{ STATIC_URL }}img/banner.png" alt="浙大麻辣烫">
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<a href="#">
+				<img src="{{ STATIC_URL }}img/seatOrder.png" alt="预定座位">
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">
+				<a href="#">
+					<img src="{{ STATIC_URL }}img/dishes.png" alt="菜品">
+				</a>
+				<a href="#">
+					<img src="{{ STATIC_URL }}img/order.png" alt="外卖">
+				</a>
+		</div>
+		<div class="col-xs-6">
+			<a href="#">
+				<img src="{{ STATIC_URL }}img/myOrder.png" alt="我的订单">
+			</a>
+		</div>
+	</div>
+</div>
 </body>
 
 </html>
