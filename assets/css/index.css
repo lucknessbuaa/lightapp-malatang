@@ -1,0 +1,21 @@
+body {
+	margin: 0;
+	background-color: #FCF7F1;
+}
+.main {
+	margin-top: 10px;
+}
+.main>.row {
+	margin-top: 10px;
+}
+.order {
+	display: block;
+	margin-top: 7%;
+}
+.col_left {
+	padding-right: 5px;
+}
+.col_right {
+	padding-left: 5px;
+}
+img{width:100%}
