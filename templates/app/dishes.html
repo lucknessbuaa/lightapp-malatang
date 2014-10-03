@@ -6,40 +6,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/dishes.css">
     <title>百度直达号-麻辣烫</title>
 </head>
 
 <body>
-<div class="banner">
-	<img src="{{ STATIC_URL }}img/banner.png" alt="浙大麻辣烫">
-</div>
 <div class="container main">
-	<div class="row">
-		<div class="col-xs-12">
-			<a href="seatOrder" class="card seat_order">
-				<img src="{{ STATIC_URL }}img/seatOrder.png" alt="预定座位">
-			</a>
+	{% for dish in dishes %}
+	<div class="dish row">
+		<div class="cover">
+			<img src="{{ STATIC_URL }}{{ dish.cover }}" alt="{{ dish.name }}" onerror="this.src='http://placehold.it/90x90&text={{ dish.name }}'">
+		</div>
+		<div class="intro">
+			<div class="name">{{ dish.name }}</div>
+			<div class="desc">{{ dish.desc }}</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-6 col_left">
-			<a href="dishes" class="card dishes">
-				<img src="{{ STATIC_URL }}img/dishes.png" alt="菜品">
-			</a>
-			<a href="order" class="card order">
-				<img src="{{ STATIC_URL }}img/order.png" alt="外卖">
-			</a>
-		</div>
-		<div class="col-xs-6 col_right">
-			<a href="myOrder" class="card my_order">
-				<img src="{{ STATIC_URL }}img/myOrder.png" alt="我的订单">
-			</a>
-		</div>
+	{% empty %}
+	<div class="nodishes">
+		现在暂时还没有更多菜品展示
 	</div>
+	{% endfor %}
+	{% if more %}
+	<a class="more" href="{{more}}"></a>
+	{% endif %}
 </div>
 <script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/dishes.js"></script>
 </body>
 
 </html>

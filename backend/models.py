@@ -10,7 +10,7 @@ class Dishes(models.Model):
     cover = models.URLField(verbose_name=u'截图')
     name = models.CharField(verbose_name=u'名称', max_length=255)
     prize = models.DecimalField(verbose_name=u'价格', max_digits=19, decimal_places=10)
-    removed = models.BooleanField()
+    removed = models.BooleanField(default=False)
 
 
 class Seat(models.Model):

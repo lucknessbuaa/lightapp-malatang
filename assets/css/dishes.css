@@ -1,0 +1,44 @@
+body {
+	margin: 0;
+	background-color: #FCF7F1;
+	font-family: "Microsoft YaHei";
+	word-wrap: break-word;
+	overflow-x: hidden;
+}
+.main {
+	margin: 10px;
+}
+.dish {
+	padding: 10px;
+	margin-bottom: 10px;
+	background: #FFF;
+	border: 1px solid #D6D6D6;
+	box-shadow: 0 0 3px #D6D6D6;
+	position: relative;
+	left: 100%;
+}
+.cover {
+	float: left;
+	width: 90px;
+}
+.cover img {
+	width: 100%;
+}
+.intro {
+	margin-left: 105px;
+}
+.name {
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+.desc {
+	font-size: 12px;
+	color: #8E8E93;
+}
+.nodishes {
+	text-align: center;
+	color: #8E8E93;
+}
+.more {
+	display: none;
+}
