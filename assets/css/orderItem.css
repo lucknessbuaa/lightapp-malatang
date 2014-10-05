@@ -7,6 +7,7 @@ body {
 }
 .main {
 	margin: 10px;
+	margin-bottom: 60px;
 }
 .dish {
 	padding: 10px;
@@ -24,21 +25,84 @@ body {
 .cover img {
 	width: 100%;
 }
-.intro {
+.info {
 	margin-left: 105px;
 }
 .name {
 	font-size: 16px;
 	margin-bottom: 5px;
 }
-.desc {
-	font-size: 12px;
-	color: #8E8E93;
+.price {
+	margin-bottom: 10px;
+	margin-top: 9px;
+	font-size: 14px;
+	color: #D66928;
+}
+.count {
+	float: right;
+}
+.count_info {
+	color: #919193;
+}
+.counter {
+	display: inline-block;
+	border: 1px solid #f4b18b;
+	border-radius: 3px;
+}
+.counter>span {
+	vertical-align: middle;
+}
+.counter>span:not(.number) {
+	color: #D66928;
+	text-align: center;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+}
+.minus {
+	border-right: 1px solid #f4b18b;
+}
+.plus {
+	border-left: 1px solid #f4b18b;
+}
+.counter>span.disabled {
+	color: #EAB595;
+}
+.total {
+	padding: 10px;
+	background-color: #FFF;
+	border-top: 1px solid #C2C2C2;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+}
+.total>div {
+	padding: 6px 12px;
+	display: inline-block;
+}
+.total>div:first-child {
+	padding-left: 0;
+	padding-right: 0;
+}
+.total .submit {
+	color: #FFF;
+	background-color: #E96419;
+	border: 1px solid #C16330;
+	border-radius: 3px;
+	font-size: 16px;
+	float: right;
+	width: 35%;
+	text-align: center;
+}
+.numberTotal {
+	color: #E96418;
+}
+.total>.totalPrice {
+	margin-right: 0;
+	font-size: 17px;
+	color: #D66928;
 }
 .nodishes {
 	text-align: center;
 	color: #8E8E93;
-}
-.more {
-	display: none;
 }

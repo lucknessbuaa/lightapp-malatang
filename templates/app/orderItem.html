@@ -17,9 +17,17 @@
 		<div class="cover">
 			<img src="{{ STATIC_URL }}{{ dish.cover }}" alt="{{ dish.name }}" onerror="this.src='http://placehold.it/90x90&text={{ dish.name }}'">
 		</div>
-		<div class="intro">
+		<div class="info">
 			<div class="name">{{ dish.name }}</div>
-			<div class="desc">{{ dish.desc }}</div>
+			<div class="price">¥ <span class="itemPrice" data-id="{{ dish.id }}">{{ dish.price }}</span></div>
+			<div class="count">
+				<span class="count_info">份数 : </span>
+				<div class="counter">
+					<span class="minus disabled" data-id="{{ dish.id }}">-</span>
+					<span class="number" data-id="{{ dish.id }}">0</span>
+					<span class="plus" data-id="{{ dish.id }}">+</span>
+				</div>
+			</div>
 		</div>
 	</div>
 	{% empty %}
@@ -28,6 +36,13 @@
 	</div>
 	{% endfor %}
 </div>
+{% if dishes %}
+<div class="total">
+	<div>共计 <span class="numberTotal">0</span> 个菜品</div>
+	<div class="totalPrice">¥ <span class="priceTotal">0.00</span></div>
+	<div class="submit">提交订单</div>
+</div>
+{% endif %}
 <script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/orderItem.js"></script>
 </body>

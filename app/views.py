@@ -27,4 +27,8 @@ def order():
 	pass
 
 def myOrder(request):
-	return render(request, 'app/myOrder.html')
+	orders = Order.objects.filter(user_id=1).order_by('-date')
+	for order in orders:
+		items = OrderItem.objects.filter(order_id=order.id)
+		order.items = items
+	return render(request, 'app/myOrder.html', {'orders':orders})

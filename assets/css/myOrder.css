@@ -1,0 +1,81 @@
+body {
+	margin: 0;
+	background-color: #FCF7F1;
+	font-family: "Microsoft YaHei";
+	word-wrap: break-word;
+	overflow-x: hidden;
+}
+.main {
+	margin: 10px;
+	margin-bottom: 60px;
+}
+.order {
+	margin-top: 5px;
+	margin-bottom: 15px;
+	background: #FFF;
+	border: 1px solid #D6D6D6;
+	box-shadow: 0 0 3px #D6D6D6;
+	position: relative;
+	left: 100%;
+}
+.order>div {
+	line-height: 30px;
+	padding: 0 10px;
+}
+.orderHeader {
+	height: 30px;
+	border-bottom: 1px solid #ECECEC;
+}
+.orderHeader>div {
+	display: inline-block;
+}
+.orderTime {
+	color: #7F7F7F;
+}
+.orderStatus {
+	color: #E96418;
+	float: right;
+}
+.orderFooter {
+	height: 30px;
+	border-top: 1px solid #ECECEC;
+}
+.orderFooter>div {
+	float: right;
+	display: inline-block;
+}
+.orderFooter>.totalPrice {
+	margin-left: 25px;
+}
+.orderItem:not(:last-child) {
+	border-bottom: 1px solid #E2E2E2;
+}
+.orderItem {
+	height: 30px;
+}
+.orderItem>.name {
+	float: left;
+	width: 60%;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.orderItem>.count {
+	color: #7F7F7F;
+	padding-left: 3px;
+}
+.orderItem>.price {
+	float: right;
+}
+.totalPrice {
+	font-size: 17px;
+	color: #E96418;
+}
+.numberTotal {
+	color: #E96418;
+}
+.noorders {
+	text-align: center;
+	color: #8E8E93;
+}
