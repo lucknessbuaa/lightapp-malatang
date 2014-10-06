@@ -69,6 +69,7 @@ body {
 	color: #EAB595;
 }
 .total {
+	display: none;
 	padding: 10px;
 	background-color: #FFF;
 	border-top: 1px solid #C2C2C2;

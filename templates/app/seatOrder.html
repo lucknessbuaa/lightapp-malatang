@@ -6,40 +6,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
-    <title>百度直达号-麻辣烫</title>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/seatOrder.css">
+    <title>预定座位</title>
 </head>
 
 <body>
-<div class="banner">
-	<img src="{{ STATIC_URL }}img/banner.png" alt="浙大麻辣烫">
-</div>
 <div class="container main">
-	<div class="row">
-		<div class="col-xs-12">
-			<a href="seatOrder" class="card seat_order">
-				<img src="{{ STATIC_URL }}img/seatOrder.png" alt="预定座位">
-			</a>
-		</div>
+	<div class="info">
+		<label for="time" class="control-label">时间</label>
+		<input type="text" class="form-control" id="time" placeholder="请选择用餐时间">
 	</div>
-	<div class="row">
-		<div class="col-xs-6 col_left">
-			<a href="dishes" class="card dishes">
-				<img src="{{ STATIC_URL }}img/dishes.png" alt="菜品">
-			</a>
-			<a href="order" class="card order">
-				<img src="{{ STATIC_URL }}img/order.png" alt="外卖">
-			</a>
-		</div>
-		<div class="col-xs-6 col_right">
-			<a href="myOrder" class="card my_order">
-				<img src="{{ STATIC_URL }}img/myOrder.png" alt="我的订单">
-			</a>
-		</div>
+	<div class="info">
+		<label for="contact" class="control-label">联系人</label>
+		<input type="text" class="form-control" id="contact" placeholder="请输入联系人姓名">
+	</div>
+	<div class="info">
+		<label for="mobile" class="control-label">手机号</label>
+		<input type="text" class="form-control" id="mobile" placeholder="请输入联系人手机号码">
+		<span class="send button">发验证码</span>
+	</div>
+	<div class="info">
+		<label for="code" class="control-label">验证码</label>
+		<input type="text" class="form-control" id="code" placeholder="请输入手机验证码">
+	</div>
+	<div class="info">
+		<label for="number" class="control-label">用餐人数</label>
+		<input type="text" class="form-control" id="number" placeholder="请选择就餐人数">
 	</div>
 </div>
+<span class="submit button">预定座位</span>
 <script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/seatOrder.js"></script>
 </body>
 
 </html>

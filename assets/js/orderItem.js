@@ -31,6 +31,9 @@ $(function(){
 			numberTotal.text(1);
 			priceTotal.text(itemPrice.toFixed(2));
 		}
+		if (!$('.total').is(':visible')) {
+			$('.total').show();
+		}
 	});
 	$(".minus").click(function(){
 		var id = $(this).data('id');
@@ -49,6 +52,10 @@ $(function(){
 			} else {
 				numberTotal.text(0);
 				priceTotal.text('0.00');
+
+				if ($('.total').is(':visible')) {
+					$('.total').hide();
+				}
 			}
 		}
 
