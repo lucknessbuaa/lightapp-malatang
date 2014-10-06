@@ -1,0 +1,36 @@
+body {
+	margin: 0;
+	font-family: "Microsoft YaHei";
+	word-wrap: break-word;
+	overflow-x: hidden;
+	background: #FCF7F1 url('../img/bg.png') no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	overflow: hidden;
+}
+.main {
+	position: absolute;
+	width: 84%;
+	left: 8%;
+	bottom: 60px;
+}
+.type {
+	background-color: #FFF;
+	border-radius: 3px;
+	padding: 6px 12px;
+	margin: 15px 0;
+	position: relative;
+	left: 100%;
+	text-align: center;
+}
+.type img {
+	width: 30px;
+	height: 30px;
+}
+.type span {
+	font-size: 16px;
+	margin-left: 20px;
+	vertical-align: sub;
+}

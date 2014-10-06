@@ -6,6 +6,9 @@ from backend.models import *
 def index(request):
     return render(request, 'app/index.html')
 
+def login(request):
+	return render(request, 'app/login.html')
+
 def seatOrder(request):
 	return render(request, 'app/seatOrder.html')
 

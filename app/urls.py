@@ -3,6 +3,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('app.views',
     url(r'^$', 'index'),
+    url(r'^login$','login'),
     url(r'^seatOrder$', 'seatOrder'),
     url(r'^dishes/(?P<page>\d*)$', 'dishes'),
     url(r'^orderItem$', 'orderItem'),
