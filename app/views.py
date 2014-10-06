@@ -23,10 +23,11 @@ def orderItem(request):
 	dishes = Dishes.objects.filter(removed=False)
 	return render(request, 'app/orderItem.html', {'dishes':dishes})
 
-def order():
-	pass
+def order(request):
+	return render(request, 'app/order.html')
 
 def myOrder(request):
+	# fake
 	orders = Order.objects.filter(user_id=1).order_by('-date')
 	for order in orders:
 		items = OrderItem.objects.filter(order_id=order.id)
