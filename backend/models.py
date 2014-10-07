@@ -30,7 +30,7 @@ class Order(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(verbose_name=u'订餐时间',auto_now_add=True, blank=True)
     deadline = models.DateTimeField(verbose_name=u'送餐时间',blank=True)
-    complete = models.DateTimeField(verbose_name=u'送达时间',blank=True)
+    complete = models.DateTimeField(verbose_name=u'送达时间',blank=True,null=True)
     location = models.TextField(verbose_name=u'地点')
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
     mobile = models.CharField(verbose_name=u'手机号',max_length=11)

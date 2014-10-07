@@ -93,6 +93,9 @@ $(function(){
 				} else if (data=='-5') {
 					alert('菜品错误');
 					$(_this).removeClass('disabled');
+				} else {
+					localStorage.setItem("items","");
+					window.location.pathname='/';
 				}
 			},
 			error: function(){

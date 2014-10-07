@@ -66,11 +66,11 @@ def order(request):
 							if not items:
 								# no selection
 								return HttpResponse(-4)
-							date = datetime.now()
+							############# modify the deadline !! ############
+							deadline = datetime.now()
 							count = 0
 							total = 0
-							# order = Order.objects.create(user_id=1, date=date, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number)
-							order = Order.objects.create(user_id=1, location=location, contact=contact, mobile=mobile, number=number)
+							order = Order.objects.create(user_id=1, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number,count=0,total=0)
 							for k, v in items.iteritems():
 								k = int(k)
 								count += v
@@ -82,10 +82,14 @@ def order(request):
 									return HttpResponse(-5)
 								price = dish.price * v
 								total += price
-								Order.objects.create(dish_id=k,order_id=order.id,count=v,name=dish.name,price=price)
-							order.update(count=count,total=total)
+								OrderItem.objects.create(dish_id=k,order_id=order.id,count=v,name=dish.name,price=price)
+							order.count = count
+							order.total = total
+							order.save()
 						except Exception, e:
 							# common error
+							if order:
+								order.delete()
 							return HttpResponse(-1)
 				except Exception, e:
 					# verify error
