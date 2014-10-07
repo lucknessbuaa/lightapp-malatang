@@ -24,6 +24,7 @@ body {
 	position: relative;
 	left: 100%;
 	text-align: center;
+	cursor: pointer;
 }
 .type img {
 	width: 30px;

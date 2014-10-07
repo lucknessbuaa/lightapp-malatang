@@ -1,10 +1,9 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from backend.models import *
 from datetime import timedelta, datetime
-import re
-import random
-import json
+from binascii import hexlify
+import re, random, json, requests, uuid, os
 
 # Create your views here.
 
@@ -12,9 +11,25 @@ def index(request):
     return render(request, 'app/index.html')
 
 def login(request):
+	identification = request.COOKIES.get('uuid')
+	if identification:
+		user = User.objects.filter(identification=identification)[:1]
+		if user:
+			return redirect('/')
+
 	return render(request, 'app/login.html')
 
 def seatOrder(request):
+	identification = request.COOKIES.get('uuid')
+	if identification:
+		user = User.objects.filter(identification=identification)[:1]
+		if not user:
+			return redirect('/app/login')
+		else:
+			user_id = user[0].id
+	else:
+		return redirect('/app/login')
+
 	return render(request, 'app/seatOrder.html')
 
 def dishes(request, page=0):
@@ -28,10 +43,30 @@ def dishes(request, page=0):
 	return render(request, 'app/dishes.html', {'dishes':dishes, 'more':more})
 
 def orderItem(request):
+	identification = request.COOKIES.get('uuid')
+	if identification:
+		user = User.objects.filter(identification=identification)[:1]
+		if not user:
+			return redirect('/app/login')
+		else:
+			user_id = user[0].id
+	else:
+		return redirect('/app/login')
+
 	dishes = Dishes.objects.filter(removed=False)
 	return render(request, 'app/orderItem.html', {'dishes':dishes})
 
 def order(request):
+	identification = request.COOKIES.get('uuid')
+	if identification:
+		user = User.objects.filter(identification=identification)[:1]
+		if not user:
+			return redirect('/app/login')
+		else:
+			user_id = user[0].id
+	else:
+		return redirect('/app/login')
+
 	request.META["CSRF_COOKIE_USED"] = True
 	if request.POST:
 		if len(request.POST) == 1 and request.POST.get('mobile', ''):
@@ -70,7 +105,7 @@ def order(request):
 							deadline = datetime.now()
 							count = 0
 							total = 0
-							order = Order.objects.create(user_id=1, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number,count=0,total=0)
+							order = Order.objects.create(user_id=user_id, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number,count=0,total=0)
 							for k, v in items.iteritems():
 								k = int(k)
 								count += v
@@ -100,9 +135,51 @@ def order(request):
 	return render(request, 'app/order.html')
 
 def myOrder(request):
-	# fake
-	orders = Order.objects.filter(user_id=1).order_by('-date')
+	identification = request.COOKIES.get('uuid')
+	if identification:
+		user = User.objects.filter(identification=identification)[:1]
+		if not user:
+			return redirect('/app/login')
+		else:
+			user_id = user[0].id
+	else:
+		return redirect('/app/login')
+
+	orders = Order.objects.filter(user_id=user_id).order_by('-date')
 	for order in orders:
 		items = OrderItem.objects.filter(order_id=order.id)
 		order.items = items
 	return render(request, 'app/myOrder.html', {'orders':orders})
+
+def auth(request, authType='baidu'):
+	code = request.GET.get('code','')
+	if authType == 'baidu':
+		authType = authType.upper()
+		grant_type = 'authorization_code'
+		client_id = 'PMQTgEz4V3IerHkX4lfvVh55'
+		client_secret = 'dRdXrBFN2s2mzFr3T8BRxMnRRh7Plome'
+		redirect_uri = 'http%3A%2F%2Fxa.limijiaoyin.com%2Fapp%2Fauth%2Fbaidu'
+		url = 'https://openapi.baidu.com/oauth/2.0/token?grant_type='+grant_type+'&code='+code+'&client_id='+client_id+'&client_secret='+client_secret+'&redirect_uri='+redirect_uri
+		try:
+			r = requests.get(url)
+			ret = json.loads(r.content)
+			if 'error' in ret:
+				return redirect('/app/login')
+			else:
+				token = ret['access_token']
+				refreshToken = ret['refresh_token']
+				rq = requests.get('https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser?access_token='+token)
+				retn = json.loads(rq.content)
+				if 'error_code' in retn:
+					return redirect('/app/login')
+				else:
+					authID = retn['uid']
+					identification = str(uuid.uuid1()) + '-' + hexlify(os.urandom(8))
+					User.objects.update_or_create(authType=authType, authID=authID, defaults={'authToken':token,'authRefreshToken':refreshToken,'identification':identification})
+					response = redirect('/')
+					response.set_cookie('uuid', identification, max_age=365*24*60*60)
+					return response
+		except:
+			return redirect('/app/login')
+
+	return HttpResponse(0)

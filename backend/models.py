@@ -12,9 +12,11 @@ class User(models.Model):
         ('QQ', 'QQ'),
         ('WECHAT', 'WeChat'),
     )
-    authType = models.CharField(verbose_name=u'类型', choices=AUTH_TYPES, default='QQ',max_length=16)
+    authType = models.CharField(verbose_name=u'类型', choices=AUTH_TYPES, default='BAIDU',max_length=16)
     authID = models.CharField(verbose_name=u'账号', max_length=255)
     authToken = models.CharField(verbose_name=u'验证', max_length=255)
+    authRefreshToken = models.CharField(verbose_name=u'验证更新', max_length=255)
+    identification = models.CharField(verbose_name=u'标志', max_length=64)
         
 
 
