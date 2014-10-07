@@ -55,6 +55,9 @@ body {
 	border-radius: 3px;
 	text-align: center;
 }
+.button.disabled {
+	opacity: 0.5;
+}
 .submit {
 	margin: 10px;
 	display: block;

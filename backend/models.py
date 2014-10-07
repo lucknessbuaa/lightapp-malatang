@@ -29,11 +29,11 @@ class Dishes(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(verbose_name=u'订餐时间',auto_now_add=True, blank=True)
-    deadline = models.DateTimeField(verbose_name=u'送餐时间')
-    complete = models.DateTimeField(verbose_name=u'送达时间')
+    deadline = models.DateTimeField(verbose_name=u'送餐时间',blank=True)
+    complete = models.DateTimeField(verbose_name=u'送达时间',blank=True)
     location = models.TextField(verbose_name=u'地点')
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
-    mobile = models.DecimalField(verbose_name=u'手机号',max_digits=11,decimal_places=0)
+    mobile = models.CharField(verbose_name=u'手机号',max_length=11)
     number = models.SmallIntegerField(verbose_name=u'人数') # 餐具？
     total = models.DecimalField(verbose_name=u'总价', max_digits=11, decimal_places=2)
     count = models.IntegerField(verbose_name=u'份数')
@@ -54,7 +54,7 @@ class Seat(models.Model):
 class SeatOrder(models.Model):
     date = models.DateTimeField(verbose_name=u'预约时间')
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
-    mobile = models.DecimalField(verbose_name=u'手机号',max_digits=11,decimal_places=0)
+    mobile = models.CharField(verbose_name=u'手机号',max_length=11)
 
 
 class SeatOrderItem(models.Model):
@@ -64,6 +64,6 @@ class SeatOrderItem(models.Model):
 
 class Verification(models.Model):
     time = models.DateTimeField(verbose_name=u'过期时间')
-    mobile = models.DecimalField(verbose_name=u'手机号',max_digits=11,decimal_places=0)
+    mobile = models.CharField(verbose_name=u'手机号',max_length=11)
     code = models.CharField(verbose_name=u'验证码',max_length=6)
-    verified = models.BooleanField(default=False)
+    usable = models.BooleanField(default=True)

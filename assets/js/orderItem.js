@@ -66,4 +66,20 @@ $(function(){
 			$('.minus[data-id='+id+']').addClass('disabled');
 		}
 	});
+	$('#submit').click(function(){
+		// cause it was single thread ~~
+		localStorage.setItem("items","");
+		var items = {};
+		$('.number').each(function(index, value){
+			if ($(value).text()!='0') {
+				items[$(value).data('id')] = +$(value).text();
+			};
+		});
+		if (!items) {
+			alert('请选择菜品');
+			return;
+		}
+		localStorage.setItem("items",JSON.stringify(items));
+		location.pathname = 'app/order';
+	});
 });
