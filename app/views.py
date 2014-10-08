@@ -122,7 +122,7 @@ def seatOrder(request):
 							else:
 								ticket = hexlify(os.urandom(4))
 								order = SeatOrder.objects.create(user_id=user_id, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
-								toUse = Seat.objects.exclude(id__in=exclude).order_by('-ordered')[:number]
+								toUse = Seat.objects.filter(reserved=False).exclude(id__in=exclude).order_by('-ordered')[:number]
 								for item in toUse:
 									item.ordered += 1
 									item.save()
