@@ -98,8 +98,7 @@ $(function(){
 					$(_this).removeClass('disabled');
 				} else {
 					localStorage.setItem("items","");
-					alert('订菜成功');
-					window.location.pathname='/';
+					window.location.href='order/complete?order='+data;
 				}
 			},
 			error: function(){

@@ -10,4 +10,5 @@ urlpatterns = patterns('app.views',
     url(r'^order$', 'order'),
     url(r'^myOrder$', 'myOrder'),
     url(r'^auth/(?P<authType>\w+)$', 'auth'),
+    url(r'^order/complete$','orderComplete'),
 )

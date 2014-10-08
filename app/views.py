@@ -242,6 +242,7 @@ def order(request):
 							order.count = count
 							order.total = total
 							order.save()
+							return HttpResponse(order.id)
 						except Exception, e:
 							# common error
 							if order:
@@ -271,6 +272,27 @@ def myOrder(request):
 		items = OrderItem.objects.filter(order_id=order.id)
 		order.items = items
 	return render(request, 'app/myOrder.html', {'orders':orders})
+
+def orderComplete(request):
+	identification = request.COOKIES.get('uuid')
+	if identification:
+		user = User.objects.filter(identification=identification)[:1]
+		if not user:
+			return redirect('/app/login')
+		else:
+			user_id = user[0].id
+	else:
+		return redirect('/app/login')
+
+	order = request.GET.get('order','0')
+	try:
+		now = datetime.now()
+		Order.objects.get(id=order,user_id=user_id,deadline__gt=now)
+	except Exception, e:
+		return redirect('/')
+
+	items = OrderItem.objects.filter(order_id=order).values('name')[:3]
+	return render(request, 'app/orderComplete.html', {'items':items})
 
 def auth(request, authType='baidu'):
 	code = request.GET.get('code','')

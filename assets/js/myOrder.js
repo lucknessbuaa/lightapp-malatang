@@ -3,7 +3,6 @@ $(function(){
 	$(".order").each(function(index){
 		if (index <= 4) {
 			time += 100*index;
-			console.log(time);
 		} else if (time <= 2000) {
 			time += 100;
 		}
