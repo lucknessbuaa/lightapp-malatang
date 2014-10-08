@@ -59,7 +59,8 @@ def seatOrder(request):
 			mobile = request.POST.get('mobile')
 			if re.match(r'^\d{11}$',mobile):
 				Verification.objects.filter(mobile=mobile).update(usable=False)
-				code = ''.join(random.choice("1234567890") for _ in range(6))
+				# code = ''.join(random.choice("1234567890") for _ in range(6))
+				code = '123456'
 				time = datetime.now() + timedelta(seconds=600)
 				Verification.objects.create(time=time, mobile=mobile, code=code)
 				#################### mobile message !! ####################
@@ -186,7 +187,8 @@ def order(request):
 			mobile = request.POST.get('mobile')
 			if re.match(r'^\d{11}$',mobile):
 				Verification.objects.filter(mobile=mobile).update(usable=False)
-				code = ''.join(random.choice("1234567890") for _ in range(6))
+				# code = ''.join(random.choice("1234567890") for _ in range(6))
+				code = '123456'
 				time = datetime.now() + timedelta(seconds=600)
 				Verification.objects.create(time=time, mobile=mobile, code=code)
 				#################### mobile message !! ####################
