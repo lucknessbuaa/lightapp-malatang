@@ -49,19 +49,20 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order)
 
 
-class Seat(models.Model):
-    num = models.IntegerField(verbose_name=u'人数')
-
-
 class SeatOrder(models.Model):
+    user = models.ForeignKey(User)
     date = models.DateTimeField(verbose_name=u'预约时间')
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
     mobile = models.CharField(verbose_name=u'手机号',max_length=11)
+    number = models.IntegerField(verbose_name=u'数量')
+    ticket = models.CharField(verbose_name=u'预约号',max_length=8)
 
 
-class SeatOrderItem(models.Model):
-    seat = models.ForeignKey(Seat)
-    num = models.IntegerField(verbose_name=u'数量')
+class Seat(models.Model):
+    seatOrder = models.ForeignKey(SeatOrder)
+    start = models.DateTimeField(verbose_name=u'起始时间',blank=True,null=True)
+    end = models.DateTimeField(verbose_name=u'结束时间',blank=True,null=True)
+    usable = models.BooleanField(default=True)
 
 
 class Verification(models.Model):

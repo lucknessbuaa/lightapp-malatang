@@ -30,6 +30,53 @@ def seatOrder(request):
 	else:
 		return redirect('/app/login')
 
+	request.META["CSRF_COOKIE_USED"] = True
+	if request.POST:
+		if len(request.POST) == 1 and request.POST.get('mobile', ''):
+			mobile = request.POST.get('mobile')
+			if re.match(r'^\d{11}$',mobile):
+				Verification.objects.filter(mobile=mobile).update(usable=False)
+				code = ''.join(random.choice("1234567890") for _ in range(6))
+				time = datetime.now() + timedelta(seconds=600)
+				Verification.objects.create(time=time, mobile=mobile, code=code)
+				#################### mobile message !! ####################
+				return HttpResponse(0)
+			else:
+				return HttpResponse(-1)
+		else:
+			date = request.POST.get('date','')
+			contact = request.POST.get('contact','')
+			mobile = request.POST.get('mobile','')
+			code = request.POST.get('code','')
+			number = request.POST.get('number','')
+			if date and contact and re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric():
+				try:
+					verification = Verification.objects.get(mobile=mobile,code=code,usable=True)
+					verification.usable = False
+					verification.save()
+					if datetime.now() > verification.time:
+						# outdate
+						return HttpResponse(-3)
+					else:
+						try:
+							now = datetime.datetime()
+							SeatOrder.objects.filter(now>end).update(usable=True)
+
+							ticket = hexlify(os.urandom(4))
+							order = SeatOrder.objects.create(user_id=user_id, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
+							#################### mobile message !! ####################
+						except Exception, e:
+							# common error
+							if order:
+								order.delete()
+							return HttpResponse(-1)
+				except Exception, e:
+					# verify error
+					return HttpResponse(-2)
+			else:
+				# common error
+				return HttpResponse(-1)
+
 	return render(request, 'app/seatOrder.html')
 
 def dishes(request, page=0):
@@ -76,6 +123,7 @@ def order(request):
 				code = ''.join(random.choice("1234567890") for _ in range(6))
 				time = datetime.now() + timedelta(seconds=600)
 				Verification.objects.create(time=time, mobile=mobile, code=code)
+				#################### mobile message !! ####################
 				return HttpResponse(0)
 			else:
 				return HttpResponse(-1)
@@ -87,7 +135,7 @@ def order(request):
 			code = request.POST.get('code','')
 			number = request.POST.get('number','')
 			items = request.POST.get('items','')
-			if re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric():
+			if deadline and location and contact and re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric() and items:
 				try:
 					verification = Verification.objects.get(mobile=mobile,code=code,usable=True)
 					verification.usable = False
