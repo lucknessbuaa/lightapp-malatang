@@ -1,7 +1,6 @@
 # coding: utf-8
 
 from django.db import models
-from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -59,10 +58,16 @@ class SeatOrder(models.Model):
 
 
 class Seat(models.Model):
+    reserved = models.BooleanField(default=False) # reserved for other usages
+    ordered = models.IntegerField(verbose_name=u'次数')
+
+
+class SeatOrderItem(models.Model):
+    seat = models.ForeignKey(Seat)
     seatOrder = models.ForeignKey(SeatOrder)
     start = models.DateTimeField(verbose_name=u'起始时间',blank=True,null=True)
     end = models.DateTimeField(verbose_name=u'结束时间',blank=True,null=True)
-    usable = models.BooleanField(default=True)
+    ended = models.BooleanField(default=False)
 
 
 class Verification(models.Model):

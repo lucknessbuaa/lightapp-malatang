@@ -1,5 +1,7 @@
 $(function(){
 	var time = 400;
+	var csrftoken = getCookie('csrftoken');
+
 	$(".info").each(function(index){
 		if (index <= 4) {
 			time += 50*index;
@@ -76,7 +78,14 @@ $(function(){
 				} else if (data=='-3') {
 					alert('验证码过期');
 					$(_this).removeClass('disabled');
+				} else if (data=='-4') {
+					alert('时间错误');
+					$(_this).removeClass('disabled');
+				} else if (data=='-5') {
+					alert('余座不够');
+					$(_this).removeClass('disabled');
 				} else {
+					alert('订座成功');
 					window.location.pathname='/';
 				}
 			},
@@ -86,4 +95,19 @@ $(function(){
 			}
 		});
 	});
+
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie != '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
 });

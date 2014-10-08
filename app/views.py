@@ -3,9 +3,32 @@ from django.shortcuts import render, redirect
 from backend.models import *
 from datetime import timedelta, datetime
 from binascii import hexlify
+from threading import Lock
 import re, random, json, requests, uuid, os
 
 # Create your views here.
+
+def parseDatetime(str):
+	FORMATS = ['%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
+		'%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
+		'%Y-%m-%d',              # '2006-10-25'
+		'%m/%d/%Y %H:%M:%S',     # '10/25/2006 14:30:59'
+		'%m/%d/%Y %H:%M',        # '10/25/2006 14:30'
+		'%m/%d/%Y',              # '10/25/2006'
+		'%m/%d/%y %H:%M:%S',     # '10/25/06 14:30:59'
+		'%m/%d/%y %H:%M',        # '10/25/06 14:30'
+		'%m/%d/%y']              # '10/25/06'
+	now = datetime.now()
+	for format in FORMATS:
+		try:
+			t = datetime.strptime(str,format)
+			if t > now:
+				return t
+			else:
+				return 0
+		except Exception, e:
+			pass
+	return 0
 
 def index(request):
     return render(request, 'app/index.html')
@@ -49,27 +72,70 @@ def seatOrder(request):
 			mobile = request.POST.get('mobile','')
 			code = request.POST.get('code','')
 			number = request.POST.get('number','')
+
+
+			date = parseDatetime(date)
+			if not date:
+				# time format error
+				return HttpResponse(-4)
+			delta = timedelta(hours=3)
+			endDate = date + delta
+
 			if date and contact and re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric():
 				try:
 					verification = Verification.objects.get(mobile=mobile,code=code,usable=True)
 					verification.usable = False
 					verification.save()
 					if datetime.now() > verification.time:
-						# outdate
+						# outdated
 						return HttpResponse(-3)
 					else:
+						lock = Lock()
+						lock.acquire()
 						try:
-							now = datetime.datetime()
-							SeatOrder.objects.filter(now>end).update(usable=True)
+							ret = -1
+							now = datetime.now()
+							used = SeatOrderItem.objects.filter(ended=False,end__lt=now)
+							exclude = []
+							for item in used:
+								item.ended = True
+								try:
+									seat = Seat.objects.get(id=item.seat_id)
+									seat.ordered -= 1
+									if seat.ordered < 0:
+										seat.ordered = 0L
+									seat.save()
+									item.save()
+								except Exception, e:
+									raise e
 
-							ticket = hexlify(os.urandom(4))
-							order = SeatOrder.objects.create(user_id=user_id, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
-							#################### mobile message !! ####################
+							useless = SeatOrderItem.objects.filter(ended=False,start__lte=endDate,end__gte=date).values('seat_id').distinct()
+							for item in useless:
+								exclude.append(item['seat_id'])
+
+							allSeats = Seat.objects.filter(reserved=False).count()
+							available = allSeats - len(useless)
+							if available < int(number):
+								# not enough seats
+								ret = -5
+							else:
+								ticket = hexlify(os.urandom(4))
+								order = SeatOrder.objects.create(user_id=user_id, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
+								toUse = Seat.objects.exclude(id__in=exclude).order_by('-ordered')[:number]
+								for item in toUse:
+									item.ordered += 1
+									item.save()
+									SeatOrderItem.objects.create(seat_id=item.id,seatOrder_id=order.id,start=date,end=endDate)
+								ret = ticket
+								#################### mobile message !! ####################
 						except Exception, e:
 							# common error
 							if order:
 								order.delete()
-							return HttpResponse(-1)
+							ret = -1
+						finally:
+							lock.release()
+							return HttpResponse(ret)
 				except Exception, e:
 					# verify error
 					return HttpResponse(-2)
@@ -135,13 +201,19 @@ def order(request):
 			code = request.POST.get('code','')
 			number = request.POST.get('number','')
 			items = request.POST.get('items','')
+
+			deadline = parseDatetime(deadline)
+			if not deadline:
+				# time format error
+				return HttpResponse(-6)
+
 			if deadline and location and contact and re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric() and items:
 				try:
 					verification = Verification.objects.get(mobile=mobile,code=code,usable=True)
 					verification.usable = False
 					verification.save()
 					if datetime.now() > verification.time:
-						# outdate
+						# outdated
 						return HttpResponse(-3)
 					else:
 						try:
@@ -149,8 +221,7 @@ def order(request):
 							if not items:
 								# no selection
 								return HttpResponse(-4)
-							############# modify the deadline !! ############
-							deadline = datetime.now()
+
 							count = 0
 							total = 0
 							order = Order.objects.create(user_id=user_id, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number,count=0,total=0)

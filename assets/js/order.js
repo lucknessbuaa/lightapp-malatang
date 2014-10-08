@@ -93,8 +93,12 @@ $(function(){
 				} else if (data=='-5') {
 					alert('菜品错误');
 					$(_this).removeClass('disabled');
+				} else if (data=='-6') {
+					alert('时间错误');
+					$(_this).removeClass('disabled');
 				} else {
 					localStorage.setItem("items","");
+					alert('订菜成功');
 					window.location.pathname='/';
 				}
 			},
