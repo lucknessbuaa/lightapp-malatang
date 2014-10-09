@@ -1,0 +1,30 @@
+body {
+	margin: 0;
+	background-color: #FCF7F1;
+}
+.main {
+	overflow: hidden;
+	margin-top: 10px;
+}
+.main a.card {
+	display: block;
+	position: relative;
+	left: 200%;
+}
+.main a.card.seat_order {
+	left: 100%;
+}
+.main>.row {
+	margin-top: 10px;
+}
+.orderItem {
+	display: block;
+	margin-top: 7%;
+}
+.col_left {
+	padding-right: 5px;
+}
+.col_right {
+	padding-left: 5px;
+}
+img{width:100%}

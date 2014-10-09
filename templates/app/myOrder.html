@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/myOrder.css">
+    <title>我的订单</title>
+</head>
+
+<body>
+<div class="container main">
+	{% for order in orders %}
+	<div class="order row">
+		<div class="orderHeader">
+			<div class="orderTime">{{ order.date|date:"Y-m-d H:i" }}</div>
+			{% if order.complete %}
+			<div class="orderStatus">已完成</div>
+			{% else %}
+			<div class="orderStatus">处理中</div>
+			{% endif %}
+		</div>
+		<div class="orderItems">
+			{% for item in order.items %}
+			<div class="orderItem">
+				<span class="name">{{ item.name }}</span>
+				<span class="count">x{{ item.count }}</span>
+				<span class="price">¥ {{ item.price }}</span>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="orderFooter">
+			<div class="totalPrice">¥ <span class="priceTotal">{{ order.total }}</span></div>
+			<div class="totalInfo">共计 <span class="numberTotal">{{ order.count }}</span> 个菜品</div>
+		</div>
+	</div>
+	{% empty %}
+	<div class="noorders">
+		您还没有下过任何订单
+	</div>
+	{% endfor %}
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/myOrder.js"></script>
+</body>
+
+</html>

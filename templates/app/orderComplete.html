@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/orderComplete.css">
+    <title>下单成功</title>
+</head>
+
+<body>
+<div class="main">
+	<div class="info">
+		<img src="{{ STATIC_URL }}img/complete.png" alt="完成">
+		<div class="title">下单成功</div>
+		<div class="tip">我们已收到您的外卖订单，会尽快安排菜品配送，</div><div class="tip">请您耐心等待！</div>
+	</div>
+	<div class="buttons">
+		<a href="/app/myOrder" class="myOrder button_l">我的订单</a>
+		<a href="javascript:void(0)" class="share button_s" id="share"><img src="{{ STATIC_URL }}img/share.png" alt="">分享</a>
+		<a href="/" class="home button_s"><img src="{{ STATIC_URL }}img/home.png" alt="">首页</a>
+	</div>
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
+<script name="baidu-tc-cerfication" type="text/javascript" charset="utf-8" src="http://apps.bdimg.com/cloudaapi/lightapp.js"></script>
+<script>
+	clouda.lightInit({
+		ak:"PMQTgEz4V3IerHkX4lfvVh55",
+		module:["socialshare"]
+	});
+	var names = '';
+	{% for item in items %}
+	names += '{{ item.name }}';
+	{% if not forloop.last %} names += '，'; {% endif %}
+	{% endfor %}
+	var content = "我要吃"+names+"...，快来使用百度餐饮直达号";
+
+	$('#share').click(function(){
+		clouda.mbaas.socialshare.callShare({
+				"mediaType": "all",
+				"content": content,
+				"linkUrl": window.location.origin,
+				"appid": "4323204",
+				"onsuccess": function(){
+					console.log('success');
+				},
+				"onfail": function(msg){
+					console.error(msg);
+				}
+			});
+	});
+	
+</script>
+</body>
+
+</html>

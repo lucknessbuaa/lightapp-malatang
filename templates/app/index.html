@@ -4,13 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>百度直达号-社团</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+    <title>麻辣烫</title>
 </head>
 
 <body>
-
+<div class="banner">
+	<img src="{{ STATIC_URL }}img/banner.png" alt="浙大麻辣烫">
+</div>
+<div class="container main">
+	<div class="row">
+		<div class="col-xs-12">
+			<a href="seatOrder" class="card seat_order">
+				<img src="{{ STATIC_URL }}img/seatOrder.png" alt="预定座位">
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6 col_left">
+			<a href="dishes" class="card dishes">
+				<img src="{{ STATIC_URL }}img/dishes.png" alt="菜品">
+			</a>
+			<a href="orderItem" class="card orderItem">
+				<img src="{{ STATIC_URL }}img/order.png" alt="外卖">
+			</a>
+		</div>
+		<div class="col-xs-6 col_right">
+			<a href="myOrder" class="card my_order">
+				<img src="{{ STATIC_URL }}img/myOrder.png" alt="我的订单">
+			</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
 </body>
 
 </html>

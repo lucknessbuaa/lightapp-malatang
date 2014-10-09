@@ -9,7 +9,8 @@ ALLOWED_HOSTS = ['*']
 from base.common import *
 
 if DEBUG:
-    INSTALLED_APPS += ('debug_toolbar',)
+	pass
+    # INSTALLED_APPS += ('debug_toolbar',)
 
 from base.loggers import LOGGING
 
