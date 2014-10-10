@@ -2,7 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-LOGIN_URL= "/welcome"
+LOGIN_URL= "/app/login"
 
 # Application definition
 
@@ -18,6 +18,24 @@ INSTALLED_APPS = (
     "django_tables2"
 )
 
+BD_CLIENT_ID = 'PMQTgEz4V3IerHkX4lfvVh55'
+BD_CLIENT_SECRET = 'dRdXrBFN2s2mzFr3T8BRxMnRRh7Plome'
+BD_REDIRECT_URI = 'http://xa.limijiaoyin.com/app/auth/baidu'
+
+WB_CLIENT_ID = '431302758'
+WB_CLIENT_SECRET = '66a0b230e2d0db8607f9686448fb78b4'
+WB_REDIRECT_URI = 'http://xa.limijiaoyin.com/app/auth/weibo'
+
+QQ_CLIENT_ID = 'PMQTgEz4V3IerHkX4lfvVh55'
+QQ_CLIENT_SECRET = 'dRdXrBFN2s2mzFr3T8BRxMnRRh7Plome'
+QQ_REDIRECT_URI = 'http://xa.limijiaoyin.com/app/auth/qq'
+
+AUTHENTICATION_BACKENDS = (
+    'backend.backends.BaiduBackend',
+    'backend.backends.WeiboBackend',
+    'backend.backends.QQBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -39,7 +57,7 @@ WSGI_APPLICATION = 'base.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_mysqlpool.backends.mysqlpool',
-        'NAME': 'malatang',
+        'NAME': 'malatang_dev',
         'USER': 'root',
         'PASSWORD': 'nameLR9969',
         'HOST': 'localhost',

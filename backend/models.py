@@ -1,10 +1,11 @@
 # coding: utf-8
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-class User(models.Model):
+class Account(models.Model):
     AUTH_TYPES = (
         ('BAIDU', 'baidu'),
         ('WEIBO', 'weibo'),
@@ -13,10 +14,7 @@ class User(models.Model):
     )
     authType = models.CharField(verbose_name=u'类型', choices=AUTH_TYPES, default='BAIDU',max_length=16)
     authID = models.CharField(verbose_name=u'账号', max_length=255)
-    authToken = models.CharField(verbose_name=u'验证', max_length=255)
-    authRefreshToken = models.CharField(verbose_name=u'验证更新', max_length=255)
-    identification = models.CharField(verbose_name=u'标志', max_length=64)
-        
+    user = models.ForeignKey(User)
 
 
 class Dishes(models.Model):
@@ -28,7 +26,7 @@ class Dishes(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User)
+    account = models.ForeignKey(Account)
     date = models.DateTimeField(verbose_name=u'订餐时间',auto_now_add=True, blank=True)
     deadline = models.DateTimeField(verbose_name=u'送餐时间',blank=True)
     complete = models.DateTimeField(verbose_name=u'送达时间',blank=True,null=True)
@@ -49,7 +47,7 @@ class OrderItem(models.Model):
 
 
 class SeatOrder(models.Model):
-    user = models.ForeignKey(User)
+    account = models.ForeignKey(Account)
     date = models.DateTimeField(verbose_name=u'预约时间')
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
     mobile = models.CharField(verbose_name=u'手机号',max_length=11)
