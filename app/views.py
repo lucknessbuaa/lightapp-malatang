@@ -26,7 +26,7 @@ def seatOrder(request):
 	account = getAccount(request.user)
 	if account is None:
 		return redirect('/')
-		
+
 	if request.POST:
 		if len(request.POST) == 1 and request.POST.get('mobile', ''):
 			mobile = request.POST.get('mobile')
@@ -260,7 +260,7 @@ def auth(request, authType='baidu'):
 			    'redirect_uri': settings.BD_REDIRECT_URI
 			})
 			ret = json.loads(r.content)
-			if 'error' in ret:
+			if 'access_token' not in ret:
 				return redirect('/app/login')
 			else:
 				token = ret['access_token']
@@ -281,7 +281,7 @@ def auth(request, authType='baidu'):
 			    'redirect_uri': settings.WB_REDIRECT_URI
 			})
 			ret = json.loads(r.content)
-			if 'error' in ret:
+			if 'access_token' not in ret:
 				return redirect('/app/login')
 			else:
 				token = ret['access_token']
@@ -294,15 +294,19 @@ def auth(request, authType='baidu'):
 			return redirect('/app/login')
 	elif authType == 'qq':
 		try:
-			r = requests.get('https://api.weibo.com/oauth2/access_token', params = {
+			r = requests.get('https://graph.qq.com/oauth2.0/token', params = {
 				'grant_type': 'authorization_code',
 			    'code': code,
-			    'client_id': settings.WB_CLIENT_ID,
-			    'client_secret': settings.WB_CLIENT_SECRET,
-			    'redirect_uri': settings.WB_REDIRECT_URI
+			    'client_id': settings.QQ_CLIENT_ID,
+			    'client_secret': settings.QQ_CLIENT_SECRET,
+			    'redirect_uri': settings.QQ_REDIRECT_URI
 			})
-			ret = json.loads(r.content)
-			if 'error' in ret:
+			try:
+				ret = json.loads(re.search('\{.*\}',r.content).group())
+			except Exception, e:
+				ret = {x.split('=')[0]:str(x.split('=')[1]) for x in r.content.split("&")}
+			
+			if 'access_token' not in ret:
 				return redirect('/app/login')
 			else:
 				token = ret['access_token']

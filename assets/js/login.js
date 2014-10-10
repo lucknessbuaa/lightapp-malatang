@@ -18,5 +18,10 @@ $(function(){
 		var redirect_uri = window.location.origin+'/app/auth/weibo';
 		window.location.href = 'https://api.weibo.com/oauth2/authorize?response_type=code&client_id='+client_id+'&redirect_uri='+encodeURIComponent(redirect_uri);
 	});
+	$(".QQAuth").click(function(){
+		var client_id = $(this).data('id');
+		var redirect_uri = window.location.origin+'/app/auth/qq';
+		window.location.href = 'https://graph.qq.com/oauth2.0/authorize?state=dying&response_type=code&client_id='+client_id+'&redirect_uri='+encodeURIComponent(redirect_uri);
+	});
 
 });

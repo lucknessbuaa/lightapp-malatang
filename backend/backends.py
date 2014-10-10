@@ -3,7 +3,7 @@ import requests
 
 from backend.models import Account
 from django.contrib.auth.models import User
-import json
+import json, re
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +14,9 @@ class BaiduBackend(object):
         })
         ret = json.loads(r.content)
 
-        if r.status_code != 200 or 'error_code' in ret:
+        if r.status_code != 200 or 'uid' not in ret:
             logger.warn('not authenticated')
             return None
-
-        logger.warn(ret)
 
         authID = str(ret['uid'])
         authType = 'BAIDU'
@@ -28,10 +26,7 @@ class BaiduBackend(object):
         except Exception, e:
             user = User.objects.create(username=name)
             account = Account.objects.create(authType=authType, authID=authID, user=user)
-                    
-        logger.debug(account.user)
-        logger.debug(account.user.is_authenticated())
-
+         
         return account.user
 
     def get_user(self, user_id):
@@ -45,11 +40,9 @@ class WeiboBackend(object):
         })
         ret = json.loads(r.content)
 
-        if r.status_code != 200 or 'error_code' in ret:
+        if r.status_code != 200 or 'uid' not in ret:
             logger.warn('not authenticated')
             return None
-
-        logger.warn(ret)
 
         authID = str(ret['uid'])
         authType = 'WEIBO'
@@ -59,10 +52,7 @@ class WeiboBackend(object):
         except Exception, e:
             user = User.objects.create(username=name)
             account = Account.objects.create(authType=authType, authID=authID, user=user)
-                    
-        logger.debug(account.user)
-        logger.debug(account.user.is_authenticated())
-
+        
         return account.user
 
     def get_user(self, user_id):
@@ -71,29 +61,27 @@ class WeiboBackend(object):
 
 class QQBackend(object):
     def authenticate(self, token=None):
-        r = requests.get('https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser', params={
+        r = requests.get('https://graph.qq.com/oauth2.0/me', params={
             'access_token': token
         })
-        ret = json.loads(r.content)
-
-        if r.status_code != 200 or 'error_code' in ret:
+        try:
+            ret = json.loads(re.search('\{.*\}',r.content).group())
+        except Exception, e:
+            ret = {x.split('=')[0]:str(x.split('=')[1]) for x in r.content.split("&")}
+        
+        if 'openid' not in ret:
             logger.warn('not authenticated')
             return None
 
-        logger.warn(ret)
-
-        name = ret['uname']
-        authID = ret['uid']
-        authType = 'BAIDU'
+        authID = str(ret['openid'])
+        authType = 'QQ'
+        name = 'qq_' + authID
         try:
             account = Account.objects.get(authType=authType, authID=authID)
         except Exception, e:
             user = User.objects.create(username=name)
             account = Account.objects.create(authType=authType, authID=authID, user=user)
-                    
-        logger.debug(account.user)
-        logger.debug(account.user.is_authenticated())
-
+         
         return account.user
 
     def get_user(self, user_id):
