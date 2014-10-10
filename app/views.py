@@ -18,7 +18,15 @@ def index(request):
 def login(request):
 	if request.user and request.user.is_active:
 		return redirect('/')
-	return render(request, 'app/login.html', {'baidu_id':settings.BD_CLIENT_ID, 'weibo_id':settings.WB_CLIENT_ID, 'qq_id':settings.QQ_CLIENT_ID})
+	content = {
+		'baidu_id':settings.BD_CLIENT_ID,
+		'weibo_id':settings.WB_CLIENT_ID,
+		'qq_id':settings.QQ_CLIENT_ID,
+		'baidu_uri':settings.BD_REDIRECT_URI,
+		'weibo_uri':settings.WB_REDIRECT_URI,
+		'qq_uri':settings.QQ_REDIRECT_URI
+	}
+	return render(request, 'app/login.html', content)
 
 @login_required()
 def seatOrder(request):
