@@ -19,22 +19,15 @@ def login(request):
 	if request.user and request.user.is_active:
 		return redirect('/')
 	content = {
-		'baidu_id':settings.BD_CLIENT_ID,
-		'weibo_id':settings.WB_CLIENT_ID,
-		'qq_id':settings.QQ_CLIENT_ID,
-		'baidu_uri':settings.BD_REDIRECT_URI,
-		'weibo_uri':settings.WB_REDIRECT_URI,
-		'qq_uri':settings.QQ_REDIRECT_URI
+		'baidu_uri':settings.BAIDU_URI,
+		'weibo_uri':settings.WEIBO_URI,
+		'qq_uri':settings.QQ_URI
 	}
 	return render(request, 'app/login.html', content)
 
 @login_required()
 def seatOrder(request):
 	request.META["CSRF_COOKIE_USED"] = True
-	account = getAccount(request.user)
-	if account is None:
-		return redirect('/')
-
 	if request.POST:
 		if len(request.POST) == 1 and request.POST.get('mobile', ''):
 			mobile = request.POST.get('mobile')
@@ -102,7 +95,7 @@ def seatOrder(request):
 								ret = -5
 							else:
 								ticket = hexlify(os.urandom(4))
-								order = SeatOrder.objects.create(account=account, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
+								order = SeatOrder.objects.create(user=request.user, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
 								toUse = Seat.objects.filter(reserved=False).exclude(id__in=exclude).order_by('-ordered')[:number]
 								for item in toUse:
 									item.ordered += 1
@@ -140,20 +133,13 @@ def dishes(request, page=0):
 @login_required()
 def orderItem(request):
 	request.META["CSRF_COOKIE_USED"] = True
-	account = getAccount(request.user)
-	if account is None:
-		return redirect('/')
-
 	dishes = Dishes.objects.filter(removed=False)
 	return render(request, 'app/orderItem.html', {'dishes':dishes})
 
 @login_required()
 def order(request):
 	request.META["CSRF_COOKIE_USED"] = True
-	account = getAccount(request.user)
-	if account is None:
-		return redirect('/')
-
+	
 	if request.POST:
 		if len(request.POST) == 1 and request.POST.get('mobile', ''):
 			mobile = request.POST.get('mobile')
@@ -198,7 +184,7 @@ def order(request):
 
 							count = 0
 							total = 0
-							order = Order.objects.create(account=account, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number,count=0,total=0)
+							order = Order.objects.create(user=request.user, deadline=deadline, location=location, contact=contact, mobile=mobile, number=number,count=0,total=0)
 							for k, v in items.iteritems():
 								k = int(k)
 								count += v
@@ -230,11 +216,7 @@ def order(request):
 
 @login_required()
 def myOrder(request):
-	account = getAccount(request.user)
-	if account is None:
-		return redirect('/')
-
-	orders = Order.objects.filter(account=account).order_by('-date')
+	orders = Order.objects.filter(user=request.user).order_by('-date')
 	for order in orders:
 		items = OrderItem.objects.filter(order_id=order.id)
 		order.items = items
@@ -243,13 +225,9 @@ def myOrder(request):
 @login_required()
 def orderComplete(request):
 	order = request.GET.get('order','0')
-	account = getAccount(request.user)
-	if account is None:
-		return redirect('/')
-
 	try:
 		now = datetime.now()
-		Order.objects.get(id=order,account=account,deadline__gt=now)
+		Order.objects.get(id=order,user=request.user,deadline__gt=now)
 	except Exception, e:
 		return redirect('/')
 

@@ -3,6 +3,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 LOGIN_URL= "/app/login"
+LOGIN_REDIRECT_URL = "/"
 
 # Application definition
 
@@ -15,25 +16,31 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'base',
     'backend',
+    'social_auth',
     "django_tables2"
 )
 
-BD_CLIENT_ID = 'PMQTgEz4V3IerHkX4lfvVh55'
-BD_CLIENT_SECRET = 'dRdXrBFN2s2mzFr3T8BRxMnRRh7Plome'
-BD_REDIRECT_URI = 'http://xa.limijiaoyin.com/app/auth/baidu'
+BAIDU_CLIENT_KEY = 'PMQTgEz4V3IerHkX4lfvVh55'
+BAIDU_CLIENT_SECRET = 'dRdXrBFN2s2mzFr3T8BRxMnRRh7Plome'
+BAIDU_URI = '/oauth/login/baidu'
 
-WB_CLIENT_ID = '431302758'
-WB_CLIENT_SECRET = '66a0b230e2d0db8607f9686448fb78b4'
-WB_REDIRECT_URI = 'http://xa.limijiaoyin.com/app/auth/weibo'
+WEIBO_CLIENT_KEY = '431302758'
+WEIBO_CLIENT_SECRET = '66a0b230e2d0db8607f9686448fb78b4'
+WEIBO_URI = '/oauth/login/weibo'
 
-QQ_CLIENT_ID = '101160444'
+QQ_CLIENT_KEY = '101160444'
 QQ_CLIENT_SECRET = '30947f9e6120ad47cccc2d4b111cd178'
-QQ_REDIRECT_URI = 'http://xa.limijiaoyin.com/app/auth/qq'
+QQ_URI = '/oauth/login/qq'
+
+SOCIAL_AUTH_UID_LENGTH = 128
+SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 128
+SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 128
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 128
 
 AUTHENTICATION_BACKENDS = (
-    'backend.backends.BaiduBackend',
-    'backend.backends.WeiboBackend',
-    'backend.backends.QQBackend',
+    'backend.weibo.WeiboBackend',
+    'backend.qq.QQBackend',
+    'backend.baidu.BaiduBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
 

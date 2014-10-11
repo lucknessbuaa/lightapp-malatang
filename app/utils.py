@@ -1,6 +1,4 @@
 from datetime import timedelta, datetime
-from backend.models import Account
-from django.contrib.auth.models import User
 
 def parseDatetime(str):
 	FORMATS = ['%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
@@ -23,11 +21,3 @@ def parseDatetime(str):
 		except Exception, e:
 			pass
 	return 0
-
-
-def getAccount(user):
-	try:
-		account = Account.objects.get(user=user)
-		return account
-	except Exception, e:
-		return None

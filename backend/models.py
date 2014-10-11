@@ -5,18 +5,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-class Account(models.Model):
-    AUTH_TYPES = (
-        ('BAIDU', 'baidu'),
-        ('WEIBO', 'weibo'),
-        ('QQ', 'QQ'),
-        ('WECHAT', 'WeChat'),
-    )
-    authType = models.CharField(verbose_name=u'类型', choices=AUTH_TYPES, default='BAIDU',max_length=16)
-    authID = models.CharField(verbose_name=u'账号', max_length=255)
-    user = models.ForeignKey(User)
-
-
 class Dishes(models.Model):
     desc = models.TextField(verbose_name=u'介绍')
     cover = models.URLField(verbose_name=u'截图')
@@ -26,7 +14,7 @@ class Dishes(models.Model):
 
 
 class Order(models.Model):
-    account = models.ForeignKey(Account)
+    user = models.ForeignKey(User)
     date = models.DateTimeField(verbose_name=u'订餐时间',auto_now_add=True, blank=True)
     deadline = models.DateTimeField(verbose_name=u'送餐时间',blank=True)
     complete = models.DateTimeField(verbose_name=u'送达时间',blank=True,null=True)
@@ -47,7 +35,7 @@ class OrderItem(models.Model):
 
 
 class SeatOrder(models.Model):
-    account = models.ForeignKey(Account)
+    user = models.ForeignKey(User)
     date = models.DateTimeField(verbose_name=u'预约时间')
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
     mobile = models.CharField(verbose_name=u'手机号',max_length=11)
