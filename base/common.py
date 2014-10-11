@@ -38,7 +38,7 @@ SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 128
 SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 128
 
 AUTHENTICATION_BACKENDS = (
-    'backend.weibo.WeiboBackend',
+    'social_auth.backends.contrib.weibo.WeiboBackend',
     'backend.qq.QQBackend',
     'backend.baidu.BaiduBackend',
     'django.contrib.auth.backends.ModelBackend'
