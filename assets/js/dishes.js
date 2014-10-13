@@ -11,6 +11,10 @@ $(function(){
 
 	var update = function(){
 		if ($(window).height() >= $(document).height() && $('.more').length) {
+			if (!$('.more').length) {
+				$(window).unbind('scroll');
+				return;
+			}
 			var more = $('.more');
 			$.get(more.attr('href'), function(data){
 				more.remove();
@@ -32,6 +36,7 @@ $(function(){
 	$(window).scroll(function(){
 		if (!$('.more').length) {
 			$(window).unbind('scroll');
+			return;
 		}
 		if ($(window).scrollTop() + $(window).height() == $(document).height()) {
 			var more = $('.more');

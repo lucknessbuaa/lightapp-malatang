@@ -1,23 +1,9 @@
 # coding: utf-8
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-
-class User(models.Model):
-    AUTH_TYPES = (
-        ('BAIDU', 'baidu'),
-        ('WEIBO', 'weibo'),
-        ('QQ', 'QQ'),
-        ('WECHAT', 'WeChat'),
-    )
-    authType = models.CharField(verbose_name=u'类型', choices=AUTH_TYPES, default='BAIDU',max_length=16)
-    authID = models.CharField(verbose_name=u'账号', max_length=255)
-    authToken = models.CharField(verbose_name=u'验证', max_length=255)
-    authRefreshToken = models.CharField(verbose_name=u'验证更新', max_length=255)
-    identification = models.CharField(verbose_name=u'标志', max_length=64)
-        
-
 
 class Dishes(models.Model):
     desc = models.TextField(verbose_name=u'介绍')
