@@ -9,6 +9,7 @@ django-render-csv
 python-memcached
 django-tables3
 django-mysqlpool
+django-social-auth
 
 uwsgi
 pillow
