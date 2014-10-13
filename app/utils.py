@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-  
 from datetime import timedelta, datetime
+import requests
 
 def parseDatetime(str):
 	FORMATS = ['%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
@@ -21,3 +23,14 @@ def parseDatetime(str):
 		except Exception, e:
 			pass
 	return 0
+
+def sendCode(mobile,code):
+	url = 'http://tui3.com/api/send'
+	content = u't3test:尊敬的客户您好，您的验证码是'+str(code)+u'，有效期为10分钟'
+	r = requests.get(url, params = {
+		'k':'6e91b7636ae753da4b9596153965e94d',
+		'r':'json',
+		'p':'1',
+		't':mobile,
+		'c':content
+	})
