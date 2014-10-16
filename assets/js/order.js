@@ -3,6 +3,12 @@ $(function(){
 	var time = 400;
 	var csrftoken = getCookie('csrftoken');
 
+	$("#dtBox").DateTimePicker({
+		'dateTimeFormat':'yyyy-MM-dd HH:mm:ss',
+		'titleContentDateTime':'选择日期时间',
+		'setButtonContent':'确定',
+		'clearButtonContent':'取消'
+	});
 	$(".info").each(function(index){
 		if (index <= 4) {
 			time += 50*index;
@@ -34,10 +40,20 @@ $(function(){
 				alert('服务器错误');
 			}
 		});
-		$(_this).text('重新获取').addClass('disabled');
-		setTimeout(function(){
-			$(_this).removeClass('disabled');
-		},30000);
+
+		var DELAY = 30;
+		$(_this).text('重新获取('+DELAY+')').addClass('disabled');
+		var now = new Date();
+		var timer = setInterval(function(){
+			time = new Date();
+			remain = DELAY - Math.floor((time - now)/1000);
+			if (remain > 0) {
+				$(_this).text('重新获取('+remain+')');
+			} else {
+				$(_this).text('重新获取').removeClass('disabled');
+				clearInterval(timer);
+			}
+		},500);
 	});
 	$("#submit").click(function(){
 		var _this = this;

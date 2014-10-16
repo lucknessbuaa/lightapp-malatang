@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/DateTimePicker.css">
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/seatOrder.css">
     <title>预定座位</title>
 </head>
@@ -14,7 +15,8 @@
 <div class="container main">
 	<div class="info">
 		<label for="time" class="control-label">时间</label>
-		<input type="text" class="form-control" id="time" placeholder="请选择用餐时间">
+		<input type="text" class="form-control" id="time" placeholder="请选择用餐时间" data-field="datetime" readonly>
+		<div id="dtBox"></div>
 	</div>
 	<div class="info">
 		<label for="contact" class="control-label">联系人</label>
@@ -36,6 +38,7 @@
 </div>
 <span class="submit button" id="submit">预定座位</span>
 <script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/DateTimePicker.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/seatOrder.js"></script>
 </body>
 

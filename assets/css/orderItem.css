@@ -49,7 +49,7 @@ body {
 	border: 1px solid #f4b18b;
 	border-radius: 3px;
 }
-.counter>span {
+.counter>span.number {
 	vertical-align: middle;
 }
 .counter>span:not(.number) {
@@ -58,6 +58,7 @@ body {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
+	line-height: 25px;
 }
 .minus {
 	border-right: 1px solid #f4b18b;

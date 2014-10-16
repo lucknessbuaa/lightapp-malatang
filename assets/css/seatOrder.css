@@ -34,6 +34,12 @@ body {
 }
 .info input#mobile {
 	width: 48%;
+	margin-right: -44px;
+}
+#send {
+	float: right;
+	line-height: 20px;
+	margin: 13px 0;
 }
 .info input::-webkit-input-placeholder {
    color: #CCC;
@@ -61,4 +67,10 @@ body {
 }
 .button.disabled {
 	opacity: 0.5;
+}
+#time[readonly] {
+	background-color: #fff;
+}
+.dtpicker-cont a:focus, .dtpicker-cont a:active, .dtpicker-cont a:visited, .dtpicker-cont a:hover {
+	text-decoration: none;
 }
