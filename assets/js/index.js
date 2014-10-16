@@ -1,3 +1,4 @@
+jQuery.fx.interval = 50;
 $(function(){
 	$("a.seat_order").animate({left: 0},400);
 	$("a.dishes").animate({left: 0},600);

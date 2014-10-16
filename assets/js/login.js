@@ -1,3 +1,4 @@
+jQuery.fx.interval = 25;
 $(function(){
 	var time = 400;
 	$(".type").each(function(index){

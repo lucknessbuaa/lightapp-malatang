@@ -1,3 +1,4 @@
+jQuery.fx.interval = 50;
 $(function(){
 	var time = 400;
 	var csrftoken = getCookie('csrftoken');
@@ -78,27 +79,12 @@ $(function(){
 			},
 			headers: {'X-CSRFToken': csrftoken},
 			success: function(data){
-				if (data=='-1') {
-					alert('提交失败');
-					$(_this).removeClass('disabled');
-				} else if (data=='-2') {
-					alert('验证码错误');
-					$(_this).removeClass('disabled');
-				} else if (data=='-3') {
-					alert('验证码过期');
-					$(_this).removeClass('disabled');
-				} else if (data=='-4') {
-					alert('请选择菜品');
-					$(_this).removeClass('disabled');
-				} else if (data=='-5') {
-					alert('菜品错误');
-					$(_this).removeClass('disabled');
-				} else if (data=='-6') {
-					alert('时间错误');
+				if ('error' in data) {
+					alert(data.msg);
 					$(_this).removeClass('disabled');
 				} else {
 					localStorage.setItem("items","");
-					window.location.href='order/complete?order='+data;
+					window.location.href='order/complete?order='+data.id;
 				}
 			},
 			error: function(){
