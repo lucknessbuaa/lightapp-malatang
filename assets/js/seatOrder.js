@@ -17,6 +17,26 @@ $(function(){
 		}
 		$(this).addClass('viewed').animate({left: 0},time);
 	});
+	$('.plus').click(function(){
+		var num = parseInt($("#number").text()) || 0;
+		num++;
+		if ($('.minus').hasClass('disabled')) {
+			$('.minus').removeClass('disabled');
+		}
+		$("#number").text(num);
+	});
+	$('.minus').click(function(){
+		if ($('.minus').hasClass('disabled')) {
+			return;
+		}
+		var num = parseInt($("#number").text()) || 0;
+		num--;
+		if (num <= 0) {
+			num = 0;
+			$('.minus').addClass('disabled');
+		}
+		$("#number").text(num);
+	});
 	$("#send").click(function(){
 		var _this = this;
 		if ($(_this).hasClass('disabled')) {
@@ -66,7 +86,7 @@ $(function(){
 		var contact = $("#contact").val();
 		var mobile = $("#mobile").val();
 		var code = $("#code").val();
-		var number = parseInt($("#number").val()) || 0;
+		var number = parseInt($("#number").text()) || 0;
 
 		if (!date || !contact || !mobile || !code || !number || !mobile.match(/^\d{11}$/)) {
 			toastr.warning('请正确填写信息');

@@ -52,9 +52,9 @@ def seatOrder(request):
 			resp = {}
 			date = parseDatetime(date)
 			if not date:
-				# time format error
+				# time format error or history time
 				resp['error'] = -4
-				resp['msg'] = u'时间格式错误'
+				resp['msg'] = u'时间错误'
 				return HttpResponse(json.dumps(resp), content_type="application/json")
 			delta = timedelta(hours=3)
 			endDate = date + delta
@@ -174,9 +174,9 @@ def order(request):
 			resp = {}
 			deadline = parseDatetime(deadline)
 			if not deadline:
-				# time format error
+				# time format error or history time
 				resp['error'] = -6
-				resp['msg'] = u'时间格式错误'
+				resp['msg'] = u'时间错误'
 				return HttpResponse(json.dumps(resp), content_type="application/json")
 
 			if deadline and location and contact and re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric() and items:

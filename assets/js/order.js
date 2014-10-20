@@ -9,6 +9,26 @@ $(function(){
 		'setButtonContent':'确定',
 		'clearButtonContent':'取消'
 	});
+	$('.plus').click(function(){
+		var num = parseInt($("#number").text()) || 0;
+		num++;
+		if ($('.minus').hasClass('disabled')) {
+			$('.minus').removeClass('disabled');
+		}
+		$("#number").text(num);
+	});
+	$('.minus').click(function(){
+		if ($('.minus').hasClass('disabled')) {
+			return;
+		}
+		var num = parseInt($("#number").text()) || 0;
+		num--;
+		if (num <= 0) {
+			num = 0;
+			$('.minus').addClass('disabled');
+		}
+		$("#number").text(num);
+	});
 	$(".info").each(function(index){
 		if (index <= 4) {
 			time += 50*index;
@@ -67,7 +87,7 @@ $(function(){
 		var contact = $("#contact").val();
 		var mobile = $("#mobile").val();
 		var code = $("#code").val();
-		var number = parseInt($("#number").val()) || 0;
+		var number = parseInt($("#number").text()) || 0;
 		var items = localStorage.getItem("items");
 
 		if (!deadline || !location || !contact || !mobile || !code || !number || !mobile.match(/^\d{11}$/)) {

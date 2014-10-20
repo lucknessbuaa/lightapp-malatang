@@ -37,8 +37,12 @@
 		<input type="text" class="form-control" id="code" placeholder="请输入手机验证码">
 	</div>
 	<div class="info">
-		<label for="number" class="control-label">用餐人数</label>
-		<input type="text" class="form-control" id="number" placeholder="请选择就餐人数">
+		<label class="control-label">用餐人数</label>
+		<div class="counter">
+			<span class="minus disabled">-</span>
+			<span class="number" id="number">0</span>
+			<span class="plus">+</span>
+		</div>
 	</div>
 </div>
 <span class="submit button" id="submit">提交订单</span>
