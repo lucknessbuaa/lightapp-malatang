@@ -77,7 +77,7 @@ $(function(){
 			};
 		});
 		if (!items) {
-			alert('请选择菜品');
+			toastr.warning('请选择菜品');
 			return;
 		}
 		localStorage.setItem("items",JSON.stringify(items));

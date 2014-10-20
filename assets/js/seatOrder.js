@@ -24,7 +24,7 @@ $(function(){
 		}
 		var mobile = $('#mobile').val();
 		if (!mobile.match(/^\d{11}$/)) {
-			alert('请正确输入手机号');
+			toastr.warning('请正确输入手机号');
 			return;
 		}
 		
@@ -34,10 +34,10 @@ $(function(){
 			data: {'mobile':mobile},
 			headers: {'X-CSRFToken': csrftoken},
 			success: function(data){
-				if (data=='-1') {alert('发送失败');}
+				if (data=='-1') {toastr.error('发送失败');}
 			},
 			error: function(){
-				alert('服务器错误');
+				toastr.error('服务器错误');
 			}
 		});
 
@@ -69,7 +69,7 @@ $(function(){
 		var number = parseInt($("#number").val()) || 0;
 
 		if (!date || !contact || !mobile || !code || !number || !mobile.match(/^\d{11}$/)) {
-			alert('请正确填写信息');
+			toastr.warning('请正确填写信息');
 			$(_this).removeClass('disabled');
 			return;
 		}
@@ -87,15 +87,15 @@ $(function(){
 			headers: {'X-CSRFToken': csrftoken},
 			success: function(data){
 				if ('error' in data) {
-					alert(data.msg);
+					toastr.error(data.msg);
 					$(_this).removeClass('disabled');
 				} else {
-					alert('订座成功');
+					toastr.success('订座成功');
 					window.location.pathname='/';
 				}
 			},
 			error: function(){
-				alert('服务器错误');
+				toastr.error('服务器错误');
 				$(_this).removeClass('disabled');
 			}
 		});
