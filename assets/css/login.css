@@ -24,8 +24,6 @@ body {
 	border-radius: 3px;
 	padding: 6px 12px;
 	margin: 15px 0;
-	position: relative;
-	left: 100%;
 	text-align: center;
 }
 .type img {
