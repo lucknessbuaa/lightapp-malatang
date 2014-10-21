@@ -7,7 +7,7 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	word-wrap: break-word;
 	overflow-x: hidden;
-	background: #FCF7F1 url('../img/bg.png') no-repeat center center fixed;
+	background: #FCF7F1 url('../img/bg.jpg') no-repeat center center fixed;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
@@ -24,8 +24,6 @@ body {
 	border-radius: 3px;
 	padding: 6px 12px;
 	margin: 15px 0;
-	position: relative;
-	left: 100%;
 	text-align: center;
 }
 .type img {
