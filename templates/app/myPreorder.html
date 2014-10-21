@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/myPreorder.css">
+    <title>我的预订</title>
+</head>
+
+<body>
+<div class="preorder">
+    {% for order in orders %}
+    <div class="wrapper">
+        <div class="item">
+            <div class="orderTime">{{ order.date|date:'Y-m-d H:i' }}</div>
+            {% if order.item.end %}
+            <div class="orderStatus">已完成</div>
+            {% else %}
+            <div class="orderStatus">处理中</div>
+            {% endif %}
+        </div>
+        <div class="item">
+            <div class="number">人数：{{ order.number }}人</div>
+        </div>
+        <div class="item" class="last">
+            <div class="startTime">预约时间：{{ order.item.start|date:'Y-m-d H:i' }}</div>
+        </div>
+    </div>
+	{% empty %}
+	<div class="noorders">
+		您目前没有预约订单
+	</div>
+    {% endfor %}
+</div>
+</body>
