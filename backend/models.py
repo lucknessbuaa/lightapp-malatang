@@ -36,11 +36,18 @@ class OrderItem(models.Model):
 
 class SeatOrder(models.Model):
     user = models.ForeignKey(User)
-    date = models.DateTimeField(verbose_name=u'预约时间')
+    time = models.DateTimeField(verbose_name=u'下单时间',auto_now_add=True)
+    start = models.DateTimeField(verbose_name=u'起始时间',blank=True,null=True)
+    end = models.DateTimeField(verbose_name=u'结束时间',blank=True,null=True)
     contact = models.CharField(verbose_name=u'联系人',max_length=32)
     mobile = models.CharField(verbose_name=u'手机号',max_length=11)
     number = models.IntegerField(verbose_name=u'数量')
     ticket = models.CharField(verbose_name=u'预约号',max_length=8)
+
+    @property
+    def finished(self):
+        from datetime import datetime
+        return self.end < datetime.now()
 
 
 class Seat(models.Model):
@@ -51,8 +58,6 @@ class Seat(models.Model):
 class SeatOrderItem(models.Model):
     seat = models.ForeignKey(Seat)
     seatOrder = models.ForeignKey(SeatOrder)
-    start = models.DateTimeField(verbose_name=u'起始时间',blank=True,null=True)
-    end = models.DateTimeField(verbose_name=u'结束时间',blank=True,null=True)
     ended = models.BooleanField(default=False)
 
 
