@@ -75,8 +75,10 @@ def seatOrder(request):
 						try:
 							ret = -1
 							ret_msg = u'提交失败'
+
+							# collect usable seats
 							now = datetime.now()
-							used = SeatOrderItem.objects.filter(ended=False,end__lt=now)
+							used = SeatOrderItem.objects.filter(ended=False,seatOrder__end__lt=now)
 							exclude = []
 							for item in used:
 								item.ended = True
@@ -90,7 +92,7 @@ def seatOrder(request):
 								except Exception, e:
 									raise e
 
-							useless = SeatOrderItem.objects.filter(ended=False,start__lte=endDate,end__gte=date).values('seat_id').distinct()
+							useless = SeatOrderItem.objects.filter(ended=False,seatOrder__start__lte=endDate,seatOrder__end__gte=date).values('seat_id').distinct()
 							for item in useless:
 								exclude.append(item['seat_id'])
 
@@ -102,12 +104,12 @@ def seatOrder(request):
 								ret_msg = u'余座不够'
 							else:
 								ticket = hexlify(os.urandom(4))
-								order = SeatOrder.objects.create(user=request.user, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
+								order = SeatOrder.objects.create(user=request.user, start=date, end=endDate, contact=contact, mobile=mobile, number=number, ticket=ticket)
 								toUse = Seat.objects.filter(reserved=False).exclude(id__in=exclude).order_by('-ordered')[:number]
 								for item in toUse:
 									item.ordered += 1
 									item.save()
-									SeatOrderItem.objects.create(seat_id=item.id,seatOrder_id=order.id,start=date,end=endDate)
+									SeatOrderItem.objects.create(seat_id=item.id,seatOrder_id=order.id)
 								ret = 0
 								ret_msg = u'预订成功'
 								#################### mobile message !! ####################
