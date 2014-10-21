@@ -1,6 +1,4 @@
-jQuery.fx.interval = 50;
 $(function(){
-	var time = 400;
 	var csrftoken = getCookie('csrftoken');
 
 	$("#dtBox").DateTimePicker({
@@ -8,14 +6,6 @@ $(function(){
 		'titleContentDateTime':'选择日期时间',
 		'setButtonContent':'确定',
 		'clearButtonContent':'取消'
-	});
-	$(".info").each(function(index){
-		if (index <= 4) {
-			time += 50*index;
-		} else {
-			time += 50;
-		}
-		$(this).addClass('viewed').animate({left: 0},time);
 	});
 	$('.plus').click(function(){
 		var num = parseInt($("#number").text()) || 0;
