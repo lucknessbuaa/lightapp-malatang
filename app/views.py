@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-  
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -48,10 +49,13 @@ def seatOrder(request):
 			number = request.POST.get('number','')
 
 
+			resp = {}
 			date = parseDatetime(date)
 			if not date:
-				# time format error
-				return HttpResponse(-4)
+				# time format error or history time
+				resp['error'] = -4
+				resp['msg'] = u'时间错误'
+				return HttpResponse(json.dumps(resp), content_type="application/json")
 			delta = timedelta(hours=3)
 			endDate = date + delta
 
@@ -62,12 +66,15 @@ def seatOrder(request):
 					verification.save()
 					if datetime.now() > verification.time:
 						# outdated
-						return HttpResponse(-3)
+						resp['error'] = -3
+						resp['msg'] = u'验证码过期'
+						return HttpResponse(json.dumps(resp), content_type="application/json")
 					else:
 						lock = Lock()
 						lock.acquire()
 						try:
 							ret = -1
+							ret_msg = u'提交失败'
 							now = datetime.now()
 							used = SeatOrderItem.objects.filter(ended=False,end__lt=now)
 							exclude = []
@@ -92,6 +99,7 @@ def seatOrder(request):
 							if available < int(number):
 								# not enough seats
 								ret = -5
+								ret_msg = u'余座不够'
 							else:
 								ticket = hexlify(os.urandom(4))
 								order = SeatOrder.objects.create(user=request.user, date=date, contact=contact, mobile=mobile, number=number, ticket=ticket)
@@ -100,34 +108,37 @@ def seatOrder(request):
 									item.ordered += 1
 									item.save()
 									SeatOrderItem.objects.create(seat_id=item.id,seatOrder_id=order.id,start=date,end=endDate)
-								ret = ticket
+								ret = 0
+								ret_msg = u'预订成功'
 								#################### mobile message !! ####################
 						except Exception, e:
 							# common error
 							if order:
 								order.delete()
 							ret = -1
+							ret_msg = u'提交失败'
 						finally:
 							lock.release()
-							return HttpResponse(ret)
+							if ret < 0:
+								resp['error'] = ret				
+							resp['msg'] = ret_msg
+							return HttpResponse(json.dumps(resp), content_type="application/json")
 				except Exception, e:
 					# verify error
-					return HttpResponse(-2)
+					resp['error'] = -2
+					resp['msg'] = u'验证码错误'
+					return HttpResponse(json.dumps(resp), content_type="application/json")
 			else:
 				# common error
-				return HttpResponse(-1)
+				resp['error'] = -1
+				resp['msg'] = u'提交失败'
+				return HttpResponse(json.dumps(resp), content_type="application/json")
 
 	return render(request, 'app/seatOrder.html')
 
 def dishes(request, page=0):
-	page = int(page) if page else 0
-	perpage = 4
-	count = Dishes.objects.filter(removed=False).count()
-	start = page*perpage
-	end = start + perpage
-	dishes = Dishes.objects.filter(removed=False)[start:end]
-	more = page+1 if end<count else 0
-	return render(request, 'app/dishes.html', {'dishes':dishes, 'more':more})
+	dishes = Dishes.objects.filter(removed=False)
+	return render(request, 'app/dishes.html', {'dishes':dishes})
 
 @login_required()
 def orderItem(request):
@@ -160,10 +171,13 @@ def order(request):
 			number = request.POST.get('number','')
 			items = request.POST.get('items','')
 
+			resp = {}
 			deadline = parseDatetime(deadline)
 			if not deadline:
-				# time format error
-				return HttpResponse(-6)
+				# time format error or history time
+				resp['error'] = -6
+				resp['msg'] = u'时间错误'
+				return HttpResponse(json.dumps(resp), content_type="application/json")
 
 			if deadline and location and contact and re.match(r'^\d{11}$',mobile) and code.isnumeric() and number.isnumeric() and items:
 				try:
@@ -172,13 +186,17 @@ def order(request):
 					verification.save()
 					if datetime.now() > verification.time:
 						# outdated
-						return HttpResponse(-3)
+						resp['error'] = -3
+						resp['msg'] = u'验证码过期'
+						return HttpResponse(json.dumps(resp), content_type="application/json")
 					else:
 						try:
 							items = json.loads(items)
 							if not items:
 								# no selection
-								return HttpResponse(-4)
+								resp['error'] = -4
+								resp['msg'] = u'请选择菜品'
+								return HttpResponse(json.dumps(resp), content_type="application/json")
 
 							count = 0
 							total = 0
@@ -191,25 +209,34 @@ def order(request):
 								except:
 									# the dish was removed
 									order.delete()
-									return HttpResponse(-5)
+									resp['error'] = -5
+									resp['msg'] = u'菜品错误'
+									return HttpResponse(json.dumps(resp), content_type="application/json")
 								price = dish.price * v
 								total += price
 								OrderItem.objects.create(dish_id=k,order_id=order.id,count=v,name=dish.name,price=price)
 							order.count = count
 							order.total = total
 							order.save()
-							return HttpResponse(order.id)
+							resp['id'] = order.id
+							return HttpResponse(json.dumps(resp), content_type="application/json")
 						except Exception, e:
 							# common error
 							if order:
 								order.delete()
-							return HttpResponse(-1)
+							resp['error'] = -1
+							resp['msg'] = u'提交失败'
+							return HttpResponse(json.dumps(resp), content_type="application/json")
 				except Exception, e:
 					# verify error
-					return HttpResponse(-2)
+					resp['error'] = -2
+					resp['msg'] = u'验证码错误'
+					return HttpResponse(json.dumps(resp), content_type="application/json")
 			else:
 				# common error
-				return HttpResponse(-1)
+				resp['error'] = -1
+				resp['msg'] = u'提交失败'
+				return HttpResponse(json.dumps(resp), content_type="application/json")
 	return render(request, 'app/order.html')
 
 @login_required()

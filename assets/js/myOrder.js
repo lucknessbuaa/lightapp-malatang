@@ -1,3 +1,4 @@
+jQuery.fx.interval = 50;
 $(function(){
 	var time = 400;
 	$(".order").each(function(index){

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}components/toastr/toastr.min.css">
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/orderItem.css">
     <title>选择菜品</title>
 </head>
@@ -43,7 +44,8 @@
 	<div class="submit" id="submit">确认选择</div>
 </div>
 {% endif %}
-<script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}components/toastr/toastr.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/orderItem.js"></script>
 </body>
 

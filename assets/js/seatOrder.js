@@ -1,7 +1,14 @@
+jQuery.fx.interval = 50;
 $(function(){
 	var time = 400;
 	var csrftoken = getCookie('csrftoken');
 
+	$("#dtBox").DateTimePicker({
+		'dateTimeFormat':'yyyy-MM-dd HH:mm:ss',
+		'titleContentDateTime':'选择日期时间',
+		'setButtonContent':'确定',
+		'clearButtonContent':'取消'
+	});
 	$(".info").each(function(index){
 		if (index <= 4) {
 			time += 50*index;
@@ -10,6 +17,26 @@ $(function(){
 		}
 		$(this).addClass('viewed').animate({left: 0},time);
 	});
+	$('.plus').click(function(){
+		var num = parseInt($("#number").text()) || 0;
+		num++;
+		if ($('.minus').hasClass('disabled')) {
+			$('.minus').removeClass('disabled');
+		}
+		$("#number").text(num);
+	});
+	$('.minus').click(function(){
+		if ($('.minus').hasClass('disabled')) {
+			return;
+		}
+		var num = parseInt($("#number").text()) || 0;
+		num--;
+		if (num <= 0) {
+			num = 0;
+			$('.minus').addClass('disabled');
+		}
+		$("#number").text(num);
+	});
 	$("#send").click(function(){
 		var _this = this;
 		if ($(_this).hasClass('disabled')) {
@@ -17,7 +44,7 @@ $(function(){
 		}
 		var mobile = $('#mobile').val();
 		if (!mobile.match(/^\d{11}$/)) {
-			alert('请正确输入手机号');
+			toastr.warning('请正确输入手机号');
 			return;
 		}
 		
@@ -27,16 +54,26 @@ $(function(){
 			data: {'mobile':mobile},
 			headers: {'X-CSRFToken': csrftoken},
 			success: function(data){
-				if (data=='-1') {alert('发送失败');}
+				if (data=='-1') {toastr.error('发送失败');}
 			},
 			error: function(){
-				alert('服务器错误');
+				toastr.error('服务器错误');
 			}
 		});
-		$(_this).text('重新获取').addClass('disabled');
-		setTimeout(function(){
-			$(_this).removeClass('disabled');
-		},30000);
+
+		var DELAY = 30;
+		$(_this).text('重新获取('+DELAY+')').addClass('disabled');
+		var now = new Date();
+		var timer = setInterval(function(){
+			time = new Date();
+			remain = DELAY - Math.floor((time - now)/1000);
+			if (remain > 0) {
+				$(_this).text('重新获取('+remain+')');
+			} else {
+				$(_this).text('重新获取').removeClass('disabled');
+				clearInterval(timer);
+			}
+		},500);
 	});
 	$("#submit").click(function(){
 		var _this = this;
@@ -49,10 +86,10 @@ $(function(){
 		var contact = $("#contact").val();
 		var mobile = $("#mobile").val();
 		var code = $("#code").val();
-		var number = parseInt($("#number").val()) || 0;
+		var number = parseInt($("#number").text()) || 0;
 
 		if (!date || !contact || !mobile || !code || !number || !mobile.match(/^\d{11}$/)) {
-			alert('请正确填写信息');
+			toastr.warning('请正确填写信息');
 			$(_this).removeClass('disabled');
 			return;
 		}
@@ -69,28 +106,16 @@ $(function(){
 			},
 			headers: {'X-CSRFToken': csrftoken},
 			success: function(data){
-				if (data=='-1') {
-					alert('提交失败');
-					$(_this).removeClass('disabled');
-				} else if (data=='-2') {
-					alert('验证码错误');
-					$(_this).removeClass('disabled');
-				} else if (data=='-3') {
-					alert('验证码过期');
-					$(_this).removeClass('disabled');
-				} else if (data=='-4') {
-					alert('时间错误');
-					$(_this).removeClass('disabled');
-				} else if (data=='-5') {
-					alert('余座不够');
+				if ('error' in data) {
+					toastr.error(data.msg);
 					$(_this).removeClass('disabled');
 				} else {
-					alert('订座成功');
+					toastr.success('订座成功');
 					window.location.pathname='/';
 				}
 			},
 			error: function(){
-				alert('服务器错误');
+				toastr.error('服务器错误');
 				$(_this).removeClass('disabled');
 			}
 		});

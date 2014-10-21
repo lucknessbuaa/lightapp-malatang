@@ -34,6 +34,12 @@ body {
 }
 .info input#mobile {
 	width: 48%;
+	margin-right: -44px;
+}
+#send {
+	float: right;
+	line-height: 20px;
+	margin: 13px 0;
 }
 .info input::-webkit-input-placeholder {
    color: #CCC;
@@ -61,4 +67,36 @@ body {
 .submit {
 	margin: 10px;
 	display: block;
+}
+#time[readonly] {
+	background-color: #fff;
+}
+.dtpicker-cont a:focus, .dtpicker-cont a:active, .dtpicker-cont a:visited, .dtpicker-cont a:hover {
+	text-decoration: none;
+}
+.counter {
+	display: inline-block;
+	border: 1px solid #f4b18b;
+	border-radius: 3px;
+	line-height: 20px;
+}
+.counter>span.number {
+	vertical-align: middle;
+}
+.counter>span:not(.number) {
+	color: #D66928;
+	text-align: center;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+}
+.minus {
+	border-right: 1px solid #f4b18b;
+}
+.plus {
+	border-left: 1px solid #f4b18b;
+}
+.counter>span.disabled {
+	color: #EAB595;
 }

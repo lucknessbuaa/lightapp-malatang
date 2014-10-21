@@ -2,6 +2,9 @@ body {
 	margin: 0;
 	background-color: #FCF7F1;
 }
+.banner {
+	pointer-events: none;
+}
 .main {
 	overflow: hidden;
 	margin-top: 10px;

@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/DateTimePicker.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}components/toastr/toastr.min.css">
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/order.css">
     <title>外卖信息</title>
 </head>
@@ -14,7 +16,8 @@
 <div class="container main">
 	<div class="info">
 		<label for="time" class="control-label">时间</label>
-		<input type="text" class="form-control" id="time" placeholder="请选择用餐时间">
+		<input type="text" class="form-control" id="time" placeholder="请选择用餐时间" data-field="datetime" readonly>
+		<div id="dtBox"></div>
 	</div>
 	<div class="info">
 		<label for="location" class="control-label">地点</label>
@@ -34,12 +37,18 @@
 		<input type="text" class="form-control" id="code" placeholder="请输入手机验证码">
 	</div>
 	<div class="info">
-		<label for="number" class="control-label">用餐人数</label>
-		<input type="text" class="form-control" id="number" placeholder="请选择就餐人数">
+		<label class="control-label">用餐人数</label>
+		<div class="counter">
+			<span class="minus disabled">-</span>
+			<span class="number" id="number">0</span>
+			<span class="plus">+</span>
+		</div>
 	</div>
 </div>
 <span class="submit button" id="submit">提交订单</span>
 <script type="text/javascript" src="{{ STATIC_URL }}components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/DateTimePicker.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}components/toastr/toastr.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/order.js"></script>
 </body>
 
