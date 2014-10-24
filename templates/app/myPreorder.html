@@ -15,8 +15,8 @@
     {% for order in orders %}
     <div class="wrapper">
         <div class="item">
-            <div class="orderTime">{{ order.date|date:'Y-m-d H:i' }}</div>
-            {% if order.item.end %}
+            <div class="orderTime">{{ order.time|date:'Y-m-d H:i' }}</div>
+            {% if order.finish %}
             <div class="orderStatus">已完成</div>
             {% else %}
             <div class="orderStatus">处理中</div>
@@ -26,7 +26,7 @@
             <div class="number">人数：{{ order.number }}人</div>
         </div>
         <div class="item" class="last">
-            <div class="startTime">预约时间：{{ order.item.start|date:'Y-m-d H:i' }}</div>
+            <div class="startTime">预约时间：{{ order.start|date:'Y-m-d H:i' }}</div>
         </div>
     </div>
 	{% empty %}

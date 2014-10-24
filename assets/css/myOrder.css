@@ -29,6 +29,7 @@ body {
 }
 .orderTime {
 	color: #7F7F7F;
+    float: left;
 }
 .orderStatus {
 	color: #E96418;

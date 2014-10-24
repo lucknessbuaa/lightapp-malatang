@@ -32,10 +32,9 @@ def login(request):
 
 @login_required()
 def preorder(request):
-	orders = SeatOrder.objects.filter(user=request.user).order_by('-date')
+	orders = SeatOrder.objects.filter(user=request.user).order_by('-time')
 	for order in orders:
-		items = SeatOrderItem.objects.filter(seatOrder_id=order.id)
-		order.item = items[0]
+		order.finish = order.finished
 	return render(request, 'app/myPreorder.html', {'orders':orders})
 
 @login_required()
