@@ -1,13 +1,16 @@
+@import "header.css";
+
 body {
 	margin: 0;
 	background-color: #FCF7F1;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	word-wrap: break-word;
 	overflow-x: hidden;
+    color: #333;
 }
+
 .main {
 	margin: 10px;
-	margin-bottom: 60px;
 }
 .order {
 	margin-top: 5px;
@@ -29,6 +32,7 @@ body {
 }
 .orderTime {
 	color: #7F7F7F;
+    float: left;
 }
 .orderStatus {
 	color: #E96418;

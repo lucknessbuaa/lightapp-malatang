@@ -47,6 +47,8 @@ class SeatOrder(models.Model):
     @property
     def finished(self):
         from datetime import datetime
+        if not self.end : 
+            return False
         return self.end < datetime.now()
 
 

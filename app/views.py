@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-  
+import logging
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -10,6 +11,9 @@ from datetime import timedelta, datetime
 from binascii import hexlify
 from threading import Lock
 import re, random, json, requests, uuid, os
+from social_auth.db.django_models import UserSocialAuth
+from django.contrib.auth import authenticate, login, logout as _logout
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -25,6 +29,13 @@ def login(request):
 		'qq_uri':settings.QQ_URI
 	}
 	return render(request, 'app/login.html', content)
+
+@login_required()
+def preorder(request):
+	orders = SeatOrder.objects.filter(user=request.user).order_by('-time')
+	for order in orders:
+		order.finish = order.finished
+	return render(request, 'app/myPreorder.html', {'orders':orders})
 
 @login_required()
 def seatOrder(request):
@@ -248,6 +259,39 @@ def myOrder(request):
 		items = OrderItem.objects.filter(order_id=order.id)
 		order.items = items
 	return render(request, 'app/myOrder.html', {'orders':orders})
+    
+def avatar(user):
+    try:
+        social = UserSocialAuth.objects.get(user=user)
+        if social.provider == 'baidu':
+            return 'http://tb.himg.baidu.com/sys/portrait/item/{portrait}' % social.extra_data
+        elif social.provider == 'weibo':
+            return social.extra_data['profile_image_url']
+        elif social.provider == 'qq':
+            return social.extra_data['figureurl_2']
+        else:
+            return None
+    except: 
+        logger.exception('user not found from social auth')
+        return None
+
+def fullname(user):
+    if user.first_name or user.last_name:
+        if user.first_name and user.last_name:
+            return user.first_name + ' ' + user.last_name
+        else:
+            return user.first_name if user.first_name else user.last_name
+    else:
+        return user.username
+
+@login_required()
+def profile(request):
+    logger.debug(request.user)
+    return render(request, 'app/profile.html', {
+        'ret_code': 0,
+        'avatar': avatar(request.user),
+        'username': fullname(request.user)
+    });
 
 @login_required()
 def orderComplete(request):
@@ -332,3 +376,7 @@ def auth(request, authType='baidu'):
 			return redirect('/app/login')
 
 	return redirect('/')
+
+def exit(request):
+    _logout(request)
+    return redirect('/app')

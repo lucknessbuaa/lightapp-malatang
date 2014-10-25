@@ -1,0 +1,77 @@
+@import "header.css";
+
+body {
+    margin: 0;
+    background-color: #FCF7F1;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    color: #333;
+}
+
+.preorder {
+    margin: 10px;
+    margin-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.preorder .wrapper {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background: #FFF;
+    border: 1px solid #D6D6D6;
+    box-shadow: 0 0 3px #D6D6D6;
+    position: relative;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.preorder .wrapper > div {
+    line-height: 30px;
+    padding: 0 10px;
+    border-bottom: 1px solid #ECECEC;
+}
+
+.preorde .wrapper .last {
+    border-bottom: 0px;
+}
+
+.preorder .wrapper .item{
+    clear: both;
+    overflow: hidden;
+}
+
+.orderTime {
+    float: left;
+    color: #7F7F7F;
+}
+
+.orderStatus {
+    float: right;
+    color: #E96418;
+}
+
+.wrapper {
+    margin-bottom: 15px;
+}
+
+.noorders {
+    text-align: center;
+    color: #8E8E93;
+}
+
+.orderItem {
+    clear: both;
+    height: 30px;
+}
+
+.orderItem .text {
+    float: left;
+    width: 100px;
+    color: #7F7F7F;
+}
+
+.orderItem:not(:last-child) {
+    border-bottom: 1px solid #E2E2E2;
+}

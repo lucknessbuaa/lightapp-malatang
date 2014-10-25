@@ -1,3 +1,5 @@
+@import "header.css";
+
 body {
 	margin: 0;
 	background-color: #FCF7F1;
@@ -5,6 +7,7 @@ body {
 	word-wrap: break-word;
 	overflow-x: hidden;
 }
+
 .main {
 	margin: 15px 0;
 	background-color: #FFF;

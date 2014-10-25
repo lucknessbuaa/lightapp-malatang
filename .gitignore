@@ -87,6 +87,6 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-
+nohup.out
 venv
 assets/components

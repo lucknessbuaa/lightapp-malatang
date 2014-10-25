@@ -1,0 +1,66 @@
+@import "header.css";
+
+body{
+    margin: 0;
+    background-color: #FCF7F1;
+    color: #333;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+.profile .avatar {
+    text-align: center;
+    margin: 0 0 50px 0;
+    padding: 30px 0 20px;
+    background-image: url('/static/img/profilebg.png');
+    background-size: 100%;
+    background-position: center top;
+}
+
+.avatar .image img {
+    max-width: 75px;
+    max-height: 75px;
+    border-radius: 75px;
+}
+
+.name {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+.button-list {
+    margin: 0 15px;
+}
+
+.profile .button-list > div {
+    border-radius: 4px;
+    border: none;
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 15px;
+    background: #fff;
+    text-align: center;
+    line-height: 25px;
+}
+
+.button-list span {
+    vertical-align: middle;
+}
+
+.button-list img {
+    max-height: 25px;
+    margin: 0 20px 0px 0;
+}
+
+#exit {
+    background-color: #fe5830;
+    color: #fff;
+}
+
+
