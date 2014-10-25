@@ -1,13 +1,17 @@
+@import "header.css";
+
 body {
     margin: 0;
     background-color: #FCF7F1;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     word-wrap: break-word;
     overflow-x: hidden;
+    color: #333;
 }
 
 .preorder {
     margin: 10px;
+    margin-top: 15px;
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -55,4 +59,19 @@ body {
 .noorders {
     text-align: center;
     color: #8E8E93;
+}
+
+.orderItem {
+    clear: both;
+    height: 30px;
+}
+
+.orderItem .text {
+    float: left;
+    width: 100px;
+    color: #7F7F7F;
+}
+
+.orderItem:not(:last-child) {
+    border-bottom: 1px solid #E2E2E2;
 }

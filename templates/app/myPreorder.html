@@ -7,10 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="stylesheet" href="{{ STATIC_URL }}components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="{{ STATIC_URL }}css/myPreorder.css">
-    <title>我的预订</title>
+    <title>我的预定</title>
 </head>
 
 <body>
+<div class="head">
+    <a href="/app/profile">
+        <img src="{{ STATIC_URL }}img/leftArrow.png" />
+    </a>
+    我的预定
+</div>
 <div class="preorder">
     {% for order in orders %}
     <div class="wrapper">
@@ -22,11 +28,23 @@
             <div class="orderStatus">处理中</div>
             {% endif %}
         </div>
-        <div class="item">
-            <div class="number">人数：{{ order.number }}人</div>
-        </div>
-        <div class="item" class="last">
-            <div class="startTime">预约时间：{{ order.start|date:'Y-m-d H:i' }}</div>
+        <div class="item orderItems">
+            <div class="orderItem">
+                <div class="text">用餐时间</div>
+                <div class="value">{{ order.start|date:'Y-m-d H:i' }}</div>
+            </div>
+            <div class="orderItem">
+                <div class="text">人数&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="value">{{ order.number }}人</div>
+            </div>
+            <div class="orderItem">
+                <div class="text">联系人</div>
+                <div class="value">{{ order.contact }}</div>
+            </div>
+            <div class="orderItem">
+                <div class="text">手机号</div>
+                <div class="value">{{ order.mobile }}</div>
+            </div>
         </div>
     </div>
 	{% empty %}

@@ -1,26 +1,38 @@
-body {
+@import "header.css";
+
+body{
     margin: 0;
     background-color: #FCF7F1;
+    color: #333;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
 }
 
 .profile .avatar {
-    margin: 40px 0px; 
     text-align: center;
+    margin: 0 0 50px 0;
+    padding: 30px 0 20px;
+    background-image: url('/static/img/profilebg.png');
+    background-size: 100%;
+    background-position: center top;
 }
 
 .avatar .image img {
-    max-width: 100px;
-    max-height: 100px;
-    border-radius: 20px;
-    box-shadow: 0px 5px 3px rgba(138, 138, 137, 0.5);
+    max-width: 75px;
+    max-height: 75px;
+    border-radius: 75px;
 }
 
 .name {
     margin-top: 10px;
-    font-size: 1.5em;
-    letter-spacing: 0.1em;
-    text-shadow: 3px 0 5px;
-    background-color: #FCF7F1;
+    font-size: 1.2em;
+}
+
+.button-list {
+    margin: 0 15px;
 }
 
 .profile .button-list > div {
@@ -28,19 +40,27 @@ body {
     border: none;
     display: block;
     width: 100%;
-    padding: 12px;
+    padding: 6px 12px;
     font-size: 16px;
     outline: none;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     background: #fff;
-    color: #000;
+    text-align: center;
+    line-height: 25px;
+}
+
+.button-list span {
+    vertical-align: middle;
 }
 
 .button-list img {
-    max-height: 30px;
-    margin: -5px 40px 0px 50px;
-    float: left;
+    max-height: 25px;
+    margin: 0 20px 0px 0;
 }
 
+#exit {
+    background-color: #fe5830;
+    color: #fff;
+}
 
 
