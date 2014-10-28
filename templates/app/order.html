@@ -13,12 +13,7 @@
 </head>
 
 <body>
-<div class="head">
-    <a href="/app/orderItem" >
-        <img src="{{ STATIC_URL }}img/leftArrow.png"/>
-    </a>
-    外卖信息
-</div>
+{% include 'app/head.html' with redirect='/app/orderItem' title='外卖信息' %}
 <div class="container main">
 	<div class="info">
 		<label for="time" class="control-label">时间</label>

@@ -11,12 +11,7 @@
 </head>
 
 <body>
-<div class="head">
-    <a href="/app/profile">
-        <img src="{{ STATIC_URL }}img/leftArrow.png" />
-    </a>
-    我的预定
-</div>
+{% include 'app/head.html' with redirect='/app/profile' title='我的预定' %}
 <div class="preorder">
     {% for order in orders %}
     <div class="wrapper">
