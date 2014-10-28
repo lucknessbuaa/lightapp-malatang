@@ -11,12 +11,7 @@
 </head>
 
 <body>
-<div class="head">
-    <a href="/app" >
-        <img src="{{ STATIC_URL }}img/leftArrow.png"/>
-    </a>
-    菜品
-</div>
+{% include "app/head.html" with redirect='/app' title="菜品" %}
 <div class="container main">
 	{% for dish in dishes %}
 	<div class="dish row">
