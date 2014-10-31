@@ -43,6 +43,7 @@ class SeatOrder(models.Model):
     mobile = models.CharField(verbose_name=u'手机号',max_length=11)
     number = models.IntegerField(verbose_name=u'数量')
     ticket = models.CharField(verbose_name=u'预约号',max_length=8)
+    status = models.IntegerField(verbose_name=u'状态',default=0)
 
     @property
     def finished(self):
