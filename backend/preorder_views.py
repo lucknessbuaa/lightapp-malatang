@@ -32,18 +32,9 @@ logger = logging.getLogger(__name__)
 @login_required
 @active_tab('preorder')
 def preorder(request):
+    preorder = SeatOrder.objects.exclude(status=-1)
     preorder = SeatOrder.objects.all()
-    search = False
-    if 'q' in request.GET and request.GET['q'] <> "":
-        logger.error(request.GET['q'])
-        preorder = preorder.filter(Q(name__contains=request.GET['q']))
-        if not preorder.exists() :
-            search = True
-    elif 'q' in request.GET and request.GET['q'] == "":
-        return HttpResponseRedirect(request.path)
     table = PreorderTable(preorder)
-    if search :
-        table = PreorderTable(preorder, empty_text='没有搜索结果')
     form = PreorderForm()
     RequestConfig(request, paginate={"per_page": 10}).configure(table)
     return render(request, "backend/preorder.html", {
@@ -54,9 +45,9 @@ def preorder(request):
 
 class PreorderTable(tables.Table):
     pk = tables.columns.Column(verbose_name='ID')
-    time = tables.columns.Column(verbose_name='创建时间', empty_values=(), orderable=False)
-    start = tables.columns.Column(verbose_name='起始时间', empty_values=(), orderable=False)
-    end = tables.columns.Column(verbose_name='结束时间', empty_values=(), orderable=False)
+    time = tables.columns.DateTimeColumn(verbose_name='创建时间', empty_values=(), orderable=False, format='Y-m-d H:i')
+    start = tables.columns.DateTimeColumn(verbose_name='起始时间', empty_values=(), orderable=False, format='Y-m-d H:i')
+    end = tables.columns.DateTimeColumn(verbose_name='结束时间', empty_values=(), orderable=False, format='Y-m-d H:i')
     number = tables.columns.Column(verbose_name='人数', empty_values=(), orderable=False)
     status = tables.columns.Column(verbose_name='状态', empty_values=(), orderable=False)
     ops = tables.columns.TemplateColumn(verbose_name='操作', template_name='backend/preorder_ops.html', orderable=False)
@@ -107,31 +98,33 @@ class PreorderForm(forms.ModelForm):
 
 @require_POST
 @json
-def add_preorder(request):
-
-    def _add_preorder(form):
-        form.save()
-        return {'ret_code': RET_CODES["ok"]}
-
-    return with_valid_form(PreorderForm(request.POST), _add_preorder)
+def delete_preorder(request):
+    preorder = SeatOrder.objects.get(pk=request.POST["id"])
+    preorder.status = -1
+    preorder.save()
+    return {'ret_code': RET_CODES['ok']}
 
 
 @require_POST
 @json
-def delete_preorder(request):
-    Preorder.objects.filter(pk=request.POST["id"]).delete()
+def complete_preorder(request):
+    preorder = SeatOrder.objects.get(pk=request.POST["id"])
+    preorder.status = 1
+    preorder.save()
     return {'ret_code': RET_CODES['ok']}
 
 
 @require_POST
 @json
 def edit_preorder(request, id):
-    preorder = Preorder.objects.get(pk=id)
-    form = PreorderForm(request.POST, instance=preorder)
+    preorder = SeatOrder.objects.get(pk=id)
+    try:
+        preorder.start = request.POST['start']
+        preorder.end = request.POST['end']
+        preorder.number = request.POST['number']
+        preorder.save()
+    except:
+        return {'ret_code': RET_CODES['form-invalid']}
 
-    def _edit_preorder(form):
-        form.save()
-        return {'ret_code': RET_CODES["ok"]}
-
-    return with_valid_form(form, _edit_preorder)
+    return {'ret_code': RET_CODES['ok']}
 

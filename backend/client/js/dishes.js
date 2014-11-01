@@ -7,11 +7,12 @@ require("bootstrap");
 //require("zh-CN");
 //require("select2");
 var parsley = require("parsley");
-require("node-django-csrf-support")();
+var csrf_token = require("node-django-csrf-support")();
 var when = require("when/when");
 var _ = require("underscore");
 var Backbone = require("backbone");
 Backbone.$ = $;
+var SimpleUpload = require("simple-upload");
 
 var errors = require("errors");
 var utils = require("utils");
@@ -40,15 +41,53 @@ function deleteDishes(id) {
     return when(request).then(mapErrors, throwNetError);
 }
 
+function upload(el) {
+    return when($.ajax("/qiniu_upload/", {
+        method: 'POST',
+        iframe: true,
+        data: {
+            csrfmiddlewaretoken: csrf_token
+        },
+        files: el,
+        processData: false,
+        dataType: 'json'
+    })).then(function(data) {
+        return mapErrors(data, function(data) {
+            return data.key;
+        });
+    }, throwNetError);
+}
+
+function getUrl(key) {
+    return key;
+}
+
 var proto = _.extend({}, formProto);
 var DishesForm = Backbone.View.extend(_.extend(proto, {
     initialize: function() {
         this.setElement($.parseHTML(DishesForm.tpl().trim())[0]);
+        this.$('[name=name]').attr({
+            maxlength: 80
+        });
+        this.$fieldCover = this.$(".group-cover .cover");
+        this.upload = new SimpleUpload.SimpleUpload({
+            name: 'cover',
+            id: 'id_cover',
+            getUrl: getUrl,
+            upload: upload
+        });
+        this.upload.on('upload-failed', _.bind(function() {
+            this.$coverErrors.empty();
+            $("<li>" + "pages.uploadFailed" + "</li>").appendTo(this.$coverErrors);
+            this.$coverErrors.fadeIn();
+        }, this)).on('upload-done', _.bind(function() {
+            this.$coverErrors.empty().fadeOut();
+        }, this));
+        $(this.upload.el).appendTo(this.$fieldCover);
+        this.$coverErrors = $("<ul class='parsley-error-list' style='display: none'></ul>");
+        this.$coverErrors.appendTo(this.$fieldCover);
         this.$alert = this.$("p.alert");
         this.$(".glyphicon-info-sign").tooltip();
-        this.$("[name=place]").attr({
-            maxlength: 100
-        });
     },
 
     bind: function(data) {
@@ -68,10 +107,10 @@ var DishesForm = Backbone.View.extend(_.extend(proto, {
         _.each(['pk', 'name', 'cover', 'price', 'desc'], _.bind(function(attr) {
             this.el[attr].value = dishes[attr];
         }, this));
+        this.upload.setPath(dishes.cover);
     },
 
-    onShow: function() {
-    },
+    onShow: function() {},
 
     clear: function() {
         _.each(['pk', 'name', 'cover', 'price', 'desc'], _.bind(function(field) {
@@ -84,6 +123,7 @@ var DishesForm = Backbone.View.extend(_.extend(proto, {
     onHide: function() {
         this.clear();
         this.clearErrors(['name', 'cover', 'price', 'desc'])
+        this.upload.setPath(null);
         //$(this.el).parsley('destroy');
     },
 
@@ -96,14 +136,19 @@ var DishesForm = Backbone.View.extend(_.extend(proto, {
             return false;
         }
         if (this.el.cover.value.trim() === "") {
-            this.addError(this.el.cover, '这是必填项。');
+            this.addError(this.$('[name=coverEmpty]'), '这是必填项。');
             return false;
         }
-        if (this.el.price.value.trim() === "") {
+        var price = this.el.price.value.trim();
+        if (price === "") {
             this.addError(this.el.price, '这是必填项。');
             return false;
+        }else if (parseFloat(price) != price || parseFloat(price) < 0) {
+            this.addError(this.el.price, '请填入正数。');
+            return false;
         }
-        if (this.el.desc.value.trim() === "") {
+
+        if(this.el.desc.value.trim() === ""){
             this.addError(this.el.desc, '这是必填项。');
             return false;
         }

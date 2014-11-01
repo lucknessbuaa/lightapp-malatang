@@ -38,10 +38,10 @@ function browserifyStream(entry, filename) {
     var stream = b.bundle();
     return stream.on('error', onError(function() {
             stream.end();
-        })).pipe(source(filename));
-        //.pipe(gulpif(!developing, streamify(uglify({
-        //    preserveComments: 'some'
-        //}))));
+        })).pipe(source(filename))
+        .pipe(gulpif(!developing, streamify(uglify({
+            preserveComments: 'some'
+        }))));
 }
 
 function onError(fn) {
@@ -83,7 +83,13 @@ gulp.task('scripts', function() {
     var takeout = browserifyStream("./backend/client/js/takeout.js", "takeout.js")
         .pipe(gulp.dest('assets/js/backend'));
 
-    return merge(dishes, takeout);
+    var preorder = browserifyStream("./backend/client/js/preorder.js", "preorder.js")
+        .pipe(gulp.dest('assets/js/backend'));
+
+    var user = browserifyStream("./backend/client/js/user.js", "user.js")
+        .pipe(gulp.dest('assets/js/backend'));
+
+    return merge(dishes, takeout, preorder, user);
 });
 
 /*

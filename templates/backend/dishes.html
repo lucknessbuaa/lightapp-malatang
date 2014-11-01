@@ -8,7 +8,6 @@
 {% block css %}
 {{ block.super }}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/backend/dishes.css">
-<link href="{{ STATIC_URL }}ajax_upload/css/ajax-upload-widget.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
 {% block content %}
@@ -45,20 +44,18 @@
                 <ul class="parsley-error-list" style="display: none"></ul>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group group-cover">
             <label class="field required control-label"
                     for="{{ form.cover.id_for_label }}">
                     {{ form.cover.label}}</label>
-            <div class="value">
-                {{ form.cover }}
-                <ul class="parsley-error-list" style="diaplay: none"></ul>
+            <div class="value cover">
+                <ul class="parsley-error-list" style="display: none" name="coverEmpty"></ul>
             </div>
         </div>
         <div class="form-group">
             <label class="field required control-label" 
                     for="{{ form.price.id_for_label }}">
-                    {{ form.price.label }}
-            </label>
+                    {{ form.price.label }}</label>
             <div class="value">
                 {{ form.price }}
                 <ul class="parsley-error-list" style="display: none"></ul>
@@ -67,8 +64,7 @@
         <div class="form-group">
             <label class="field required control-label" 
                     for="{{ form.desc.id_for_label }}">
-                    {{ form.desc.label }}
-            </label>
+                    {{ form.desc.label }}</label>
             <div class="value">
                 {{ form.desc }}
                 <ul class="parsley-error-list" style="display: none"></ul>

@@ -1,17 +1,15 @@
 <div class="btn-group btn-group-sm"
     data-pk="{{ record.pk }}"
-    data-name="{{ record.name }}"
-    data-cover="{{ record.cover }}"
-    data-price="{{ record.price }}"
-    data-desc="{{ record.desc }}"
+    data-start="{{ record.start|date:'Y-m-d H:m'}}"
+    data-end="{{ record.end|date:'Y-m-d H:m' }}"
+    data-number="{{ record.number }}"
     >
 
-    <button class="btn btn-default edit" title="edit">
-        <span class="glyphicon glyphicon-edit"></span>
+    <button class="btn btn-default complete" title="complete" {% if record.status == 1 %} disabled {% endif %}>
+        <span class="glyphicon glyphicon-ok"></span>
     </button>
 
     <button class="btn btn-danger delete" title="delete">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-
 </div>

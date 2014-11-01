@@ -19,7 +19,10 @@ urlpatterns = urlpatterns + patterns('backend.dishes_views',
 )
 
 urlpatterns = urlpatterns + patterns('backend.preorder_views',
-    url(r'^preorder$', 'preorder')
+    url(r'^preorder$', 'preorder'),
+    url(r'^preorder/(?P<id>\d+)$', 'edit_preorder'),
+    url(r'^preorder/delete$', 'delete_preorder'),
+    url(r'^preorder/complete$', 'complete_preorder')
 )
 
 urlpatterns = urlpatterns + patterns('backend.user_views',

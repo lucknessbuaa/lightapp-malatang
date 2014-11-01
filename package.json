@@ -60,6 +60,8 @@
     "jquery": "./assets/components/jquery/jquery.js",
     "bootstrap": "./assets/components/bootstrap/dist/js/bootstrap.js",
     "bootstrap-datetimepicker": "./assets/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js",
+    "zh-CN": "./assets/components/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js",
+    "moment": "./assets/components/moment/moment.js",
     "jquery-placeholder": "./assets/components/jquery-placeholder/jquery.placeholder.js",
     "jquery-iframetransport": "./assets/components/jquery.iframe-transport/jquery.iframe-transport.js",
     "select2": "./assets/components/select2/select2.js",
@@ -76,6 +78,7 @@
     "utils": "./assets/js/common/utils.js",
     "chart": "./assets/js/common/ChartNew.js",
     "formProto": "./assets/js/common/formProto.js",
+    "simple-upload": "./assets/js/common/simple-upload.js",
     "formValidationProto": "./assets/js/common/formValidationProto.js"
   },
   "browserify-shim": {

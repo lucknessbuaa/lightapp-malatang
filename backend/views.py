@@ -38,6 +38,6 @@ def index(request):
         logger.debug(request.user.is_staff)
         return redirect('/backend/login')
     else:
-        return redirect('/backend/takeout')
+        return redirect('/backend/dishes')
 
 

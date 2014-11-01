@@ -60,6 +60,13 @@ class DishesTable(tables.Table):
     desc = tables.columns.Column(verbose_name='描述', empty_values=(), orderable=False)
     ops = tables.columns.TemplateColumn(verbose_name='操作', template_name='backend/dishes_ops.html', orderable=False)
 
+    def render_cover(self, value):
+        if value != '':
+            url = value
+            return mark_safe('<a href="%s"><img src="%s" class="img-thumbnail"></a>' % (url, url))
+        else:
+            return mark_safe('<a><img></a>')
+
     class Meta:
         model = Dishes
         empty_text = u'没有宣讲会信息'
@@ -80,15 +87,16 @@ class DishesForm(forms.ModelForm):
             'parsley-required': '',
         })))
 
-    #todo
     cover = forms.CharField(label=u"封面",
         widget=forms.TextInput(attrs=us.extend({}, fieldAttrs, {
             'parsley-required': '',
         })))
 
     desc = forms.CharField(label=u"描述",
-        widget=forms.TextInput(attrs=us.extend({}, fieldAttrs, {
+        widget=forms.Textarea(attrs=us.extend({}, fieldAttrs, {
             'parsley-required': '',
+            'rows': '4',
+            'style': 'resize:none'
         })))
 
     price = forms.FloatField(label=u"价格",
